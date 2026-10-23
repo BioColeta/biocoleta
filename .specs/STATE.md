@@ -45,10 +45,10 @@
 ## Handoff
 
 - **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Phase 2 / after T2.1; next T2.2 TelemetryService
-- **Completed**: through T2.1; seed uses demo_operator
+- **Phase / Task**: Phase 2 done; next Phase 3 / T3.1 AnomalyDetector
+- **Completed**: through T2.3 (TEL-01..03); demo seed password cleaned
 - **In-progress**: none
-- **Next step**: T2.2 — TelemetryService::ingest + payload validation
+- **Next step**: T3.1 — AnomalyDetector consecutive rule (issue #8)
 - **Blockers**: composer.lock not versioned (learning project choice)
-- **Uncommitted files**: none after T2.1 commit
+- **Uncommitted files**: none
 - **Branch**: main
