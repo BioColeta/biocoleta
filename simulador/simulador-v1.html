@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioColeta - Simulador IoT de Bancada Virtual (ESP32)</title>
+    <style>
+        :root {
+            --bg-dark: #121824;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --text-light: #f8fafc;
+            --text-dim: #94a3b8;
+            --oled-bg: #090d16;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        header h1 {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .workbench {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        @media (max-width: 850px) {
+            .workbench {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+        }
+
+        /* Placa ESP32 e Display OLED */
+        .esp32-board {
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .status-leds {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .led-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .led {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #475569;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .led.active-pwr { background-color: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
+        .led.active-wifi { background-color: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue); }
+        .led.active-tx { background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+
+        .oled-display {
+            background-color: var(--oled-bg);
+            border: 3px solid #1e293b;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #38bdf8;
+            box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.2);
+            min-height: 100px;
+        }
+
+        .oled-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #0284c7;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+
+        .oled-body {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Sliders de Controle */
+        .control-group {
+            margin-bottom: 18px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .control-label span.val {
+            font-weight: bold;
+            color: var(--accent-blue);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #334155;
+            outline: none;
+            accent-color: var(--accent-blue);
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background: #0f172a;
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider-switch {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #475569;
+            transition: .3s;
+            border-radius: 22px;
+        }
+
+        .slider-switch:before {
+            position: absolute;
+            content: "";
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-switch { background-color: var(--accent-green); }
+        input:checked + .slider-switch:before { transform: translateX(22px); }
+
+        /* Botões de Ação */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background-color: #334155;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn:hover { background-color: #475569; }
+        .btn-primary { background-color: #0284c7; }
+        .btn-primary:hover { background-color: #0369a1; }
+        .btn-danger { background-color: #dc2626; }
+        .btn-danger:hover { background-color: #b91c1c; }
+        .btn-warning { background-color: #d97706; }
+        .btn-warning:hover { background-color: #b45309; }
+
+        /* Console Terminal */
+        .terminal {
+            background-color: #090d16;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.8rem;
+            height: 380px;
+            overflow-y: auto;
+            color: #a7f3d0;
+        }
+
+        .log-entry { margin-bottom: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+        .log-time { color: var(--text-dim); }
+        .log-http { color: var(--accent-blue); }
+        .log-json { color: #fde047; white-space: pre-wrap; font-size: 0.75rem; }
+        .log-alert { color: var(--accent-red); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌱 BioColeta - Simulador IoT (ESP32 Drain Monitor)</h1>
+        <p>Bancada Virtual Estilo Tinkercad • Ingestão de Telemetria JSON e MQTT para Drenagem Urbana</p>
+    </header>
+
+    <div class="workbench">
+        <!-- PAINEL ESQUERDO: CONTROLES DA BANCADA -->
+        <div class="panel">
+            <div class="panel-title">
+                <span>⚡ Dispositivo ESP32-DRAIN-0102</span>
+                <span id="conn-badge" style="font-size: 0.75rem; background: #065f46; color: #34d399; padding: 2px 8px; border-radius: 12px;">ONLINE</span>
+            </div>
+
+            <!-- Placa com Display OLED -->
+            <div class="esp32-board">
+                <div class="status-leds">
+                    <div class="led-group"><div class="led active-pwr"></div>PWR</div>
+                    <div class="led-group"><div id="led-wifi" class="led active-wifi"></div>WIFI</div>
+                    <div class="led-group"><div id="led-tx" class="led"></div>TX</div>
+                </div>
+
+                <div class="oled-display">
+                    <div class="oled-header">
+                        <span>BIOCOLETA v1.0</span>
+                        <span id="oled-proto">HTTP/REST</span>
+                    </div>
+                    <div class="oled-body" id="oled-text">
+                        Nível: 20.0%<br>
+                        Fluxo: 2.50 L/s<br>
+                        Estado: NORMAL
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles dos Sensores -->
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Nível de Água (Ultrassônico HC-SR04)</span>
+                    <span class="val" id="val-level">20.0%</span>
+                </div>
+                <input type="range" id="input-level" min="0" max="100" value="20" step="0.5">
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Fluxo de Saída (Sensor YF-S201)</span>
+                    <span class="val" id="val-flow">2.50 L/s</span>
+                </div>
+                <input type="range" id="input-flow" min="0" max="10" value="2.5" step="0.05">
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Qualidade do Sinal / Confiabilidade</span>
+                    <span class="val" id="val-quality">0.98</span>
+                </div>
+                <input type="range" id="input-quality" min="0" max="1" value="0.98" step="0.01">
+            </div>
+
+            <div class="toggle-switch">
+                <span>Alerta de Tampa / Tamper</span>
+                <label class="switch">
+                    <input type="checkbox" id="input-tamper">
+                    <span class="slider-switch"></span>
+                </label>
+            </div>
+
+            <div class="toggle-switch">
+                <span>Protocolo de Comunicação</span>
+                <select id="select-proto" style="background:#1e293b; color:white; border:1px solid #475569; padding:4px 8px; border-radius:4px;">
+                    <option value="HTTP">HTTP REST (POST JSON)</option>
+                    <option value="MQTT">MQTT (WebSocket)</option>
+                </select>
+            </div>
+
+            <!-- Cenários Pré-configurados -->
+            <div style="margin-top:15px; border-top:1px solid #334155; padding-top:10px;">
+                <span style="font-size:0.8rem; color:var(--text-dim);">Cenários Rápidos de Teste:</span>
+                <div class="btn-grid">
+                    <button class="btn" onclick="setScenario(20, 2.5, false)">Normal (Seco)</button>
+                    <button class="btn btn-warning" onclick="setScenario(85, 0.01, false)">Obstrução (Alerta IA)</button>
+                    <button class="btn btn-danger" onclick="setScenario(95, 0.00, true)">Enxurrada/Pico</button>
+                    <button class="btn btn-primary" onclick="transmitTelemetry()">Transmitir Agora</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAINEL DIREITO: MONITOR SERIAL DE INSPEÇÃO -->
+        <div class="panel">
+            <div class="panel-title">
+                <span>📡 Terminal de Saída e Pacotes JSON</span>
+                <button class="btn" onclick="clearLogs()" style="padding:2px 8px; font-size:0.75rem;">Limpar</button>
+            </div>
+
+            <div class="terminal" id="terminal-log">
+                <div class="log-entry">
+                    <span class="log-time">[SYSTEM]</span> Simulador IoT BioColeta inicializado com sucesso.<br>
+                    Aguardando envio periódico de telemetria (ESP32-DRAIN-0102)...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estado do Dispositivo
+        let isConnected = true;
+        let transmissionTimer = null;
+
+        // Elementos DOM
+        const inputLevel = document.getElementById('input-level');
+        const inputFlow = document.getElementById('input-flow');
+        const inputQuality = document.getElementById('input-quality');
+        const inputTamper = document.getElementById('input-tamper');
+        const selectProto = document.getElementById('select-proto');
+
+        const valLevel = document.getElementById('val-level');
+        const valFlow = document.getElementById('val-flow');
+        const valQuality = document.getElementById('val-quality');
+        
+        const oledText = document.getElementById('oled-text');
+        const oledProto = document.getElementById('oled-proto');
+        const terminalLog = document.getElementById('terminal-log');
+        const ledTx = document.getElementById('led-tx');
+
+        // Atualização dos Rótulos
+        function updateDisplays() {
+            const level = parseFloat(inputLevel.value).toFixed(1);
+            const flow = parseFloat(inputFlow.value).toFixed(2);
+            const quality = parseFloat(inputQuality.value).toFixed(2);
+            const proto = selectProto.value;
+
+            valLevel.innerText = `${level}%`;
+            valFlow.innerText = `${flow} L/s`;
+            valQuality.innerText = quality;
+            oledProto.innerText = proto === 'HTTP' ? 'HTTP/REST' : 'MQTT/WS';
+
+            // Regra determinística do PHP acionada (Nível >= 75% e Fluxo <= 0.05 L/s)
+            let statusStr = "NORMAL";
+            if (level >= 75.0 && flow <= 0.05) {
+                statusStr = "⚠️ ALERTA OBSTRUÇÃO";
+            } else if (level >= 75.0) {
+                statusStr = "ATENÇÃO (NÍVEL ALTO)";
+            }
+
+            oledText.innerHTML = `Nível: ${level}%<br>Fluxo: ${flow} L/s<br>Estado: ${statusStr}`;
+        }
+
+        inputLevel.addEventListener('input', updateDisplays);
+        inputFlow.addEventListener('input', updateDisplays);
+        inputQuality.addEventListener('input', updateDisplays);
+        selectProto.addEventListener('change', updateDisplays);
+
+        // Aplicação de Cenários de Teste
+        function setScenario(level, flow, tamper) {
+            inputLevel.value = level;
+            inputFlow.value = flow;
+            inputTamper.checked = tamper;
+            updateDisplays();
+            transmitTelemetry();
+        }
+
+        // Transmissão de Pacote Telemétrico
+        function transmitTelemetry() {
+            const level = parseFloat(inputLevel.value);
+            const flow = parseFloat(inputFlow.value);
+            const quality = parseFloat(inputQuality.value);
+            const tamper = inputTamper.checked;
+            const proto = selectProto.value;
+            const timestamp = new Date().toISOString();
+
+            // Piscar LED TX
+            ledTx.classList.add('active-tx');
+            setTimeout(() => ledTx.classList.remove('active-tx'), 300);
+
+            // Contrato de Telemetria Padronizado (SmartCity Lab)
+            const payload = {
+                city_id: "MATAO-SP",
+                sector: "sanitation",
+                entity_type: "drain",
+                entity_id: "BUEIRO-0102",
+                device_id: "ESP32-DRAIN-0102",
+                timestamp: timestamp,
+                readings: [
+                    { sensor_id: "WATER-LEVEL-01", measurement: "water_level", value: level, unit: "percent" },
+                    { sensor_id: "WATER-FLOW-01", measurement: "water_flow", value: flow, unit: "L/s" }
+                ],
+                quality: quality,
+                tamper_alert: tamper
+            };
+
+            // Log no Terminal
+            const isAnomaly = (level >= 75.0 && flow <= 0.05);
+            let logHtml = `<div class="log-entry">
+                <span class="log-time">[${new Date().toLocaleTimeString()}]</span> 
+                <span class="log-http">${proto} POST /api/telemetry</span><br>`;
+            
+            if (isAnomaly) {
+                logHtml += `<span class="log-alert">🚨 GATILHO DETERMINÍSTICO PHP: Nível >= 75% e Fluxo <= 0.05 L/s em duas leituras. Chamada de IA ativada!</span><br>`;
+            }
+
+            logHtml += `<div class="log-json">${JSON.stringify(payload, null, 2)}</div></div>`;
+
+            terminalLog.innerHTML = logHtml + terminalLog.innerHTML;
+        }
+
+        function clearLogs() {
+            terminalLog.innerHTML = `<div class="log-entry"><span class="log-time">[SYSTEM]</span> Console limpo.</div>`;
+        }
+
+        // Transmissão Automática a cada 10 segundos
+        setInterval(transmitTelemetry, 10000);
+        updateDisplays();
+    </script>
+</body>
+</html>

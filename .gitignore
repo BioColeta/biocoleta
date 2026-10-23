@@ -1,0 +1,6 @@
+.tdd-state
+.tdd-state
+docs/*.pdf
+vendor/
+backend/vendor/
+.env
