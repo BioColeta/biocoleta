@@ -48,7 +48,7 @@
 - **Phase / Task**: Execute complete through Phase 6 (T6.1); UI decision form shipped with ALT view
 - **Completed**: T0–T6 implementation commits; PHPUnit green
 - **In-progress**: none
-- **Next step**: optional push + Verifier/UAT demo; close GitHub issues #5–#11
+- **Next step**: issues assigned/closed after push
 - **Blockers**: composer.lock not versioned (learning project choice)
-- **Uncommitted files**: README/STATE pending this handoff commit
-- **Branch**: main
+- **Uncommitted files**: none
+- **Branch**: main (ready to push)
