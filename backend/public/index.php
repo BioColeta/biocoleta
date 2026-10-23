@@ -18,6 +18,14 @@ $config = require dirname(__DIR__) . '/config/app.php';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
+if ($method === 'OPTIONS') {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Headers: Content-Type, X-Device-Key');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    http_response_code(204);
+    exit;
+}
+
 if ($method === 'POST' && $path === '/api/telemetry') {
     try {
         $pdo = ConnectionFactory::fromConfig($config['db']);

@@ -266,7 +266,7 @@
 
     <header>
         <h1>🌱 BioColeta - Simulador IoT (ESP32 Drain Monitor)</h1>
-        <p>Bancada Virtual Estilo Tinkercad • Ingestão de Telemetria JSON e MQTT para Drenagem Urbana</p>
+        <p>Bancada Virtual • Ingestão de Telemetria JSON via HTTP/REST para Drenagem Urbana</p>
     </header>
 
     <div class="workbench">
@@ -331,12 +331,20 @@
                 </label>
             </div>
 
-            <div class="toggle-switch">
-                <span>Protocolo de Comunicação</span>
-                <select id="select-proto" style="background:#1e293b; color:white; border:1px solid #475569; padding:4px 8px; border-radius:4px;">
-                    <option value="HTTP">HTTP REST (POST JSON)</option>
-                    <option value="MQTT">MQTT (WebSocket)</option>
-                </select>
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Backend base URL</span>
+                </div>
+                <input type="text" id="input-base-url" value="http://127.0.0.1:8080"
+                       style="width:100%; background:#1e293b; color:white; border:1px solid #475569; padding:8px; border-radius:4px;">
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>X-Device-Key</span>
+                </div>
+                <input type="text" id="input-device-key" value="demo-device-key"
+                       style="width:100%; background:#1e293b; color:white; border:1px solid #475569; padding:8px; border-radius:4px;">
             </div>
 
             <!-- Cenários Pré-configurados -->
@@ -344,7 +352,7 @@
                 <span style="font-size:0.8rem; color:var(--text-dim);">Cenários Rápidos de Teste:</span>
                 <div class="btn-grid">
                     <button class="btn" onclick="setScenario(20, 2.5, false)">Normal (Seco)</button>
-                    <button class="btn btn-warning" onclick="setScenario(85, 0.01, false)">Obstrução (Alerta IA)</button>
+                    <button class="btn btn-warning" onclick="setScenario(85, 0.01, false)">Obstrução (Alerta)</button>
                     <button class="btn btn-danger" onclick="setScenario(95, 0.00, true)">Enxurrada/Pico</button>
                     <button class="btn btn-primary" onclick="transmitTelemetry()">Transmitir Agora</button>
                 </div>
@@ -377,7 +385,8 @@
         const inputFlow = document.getElementById('input-flow');
         const inputQuality = document.getElementById('input-quality');
         const inputTamper = document.getElementById('input-tamper');
-        const selectProto = document.getElementById('select-proto');
+        const inputBaseUrl = document.getElementById('input-base-url');
+        const inputDeviceKey = document.getElementById('input-device-key');
 
         const valLevel = document.getElementById('val-level');
         const valFlow = document.getElementById('val-flow');
@@ -388,19 +397,16 @@
         const terminalLog = document.getElementById('terminal-log');
         const ledTx = document.getElementById('led-tx');
 
-        // Atualização dos Rótulos
         function updateDisplays() {
             const level = parseFloat(inputLevel.value).toFixed(1);
             const flow = parseFloat(inputFlow.value).toFixed(2);
             const quality = parseFloat(inputQuality.value).toFixed(2);
-            const proto = selectProto.value;
 
             valLevel.innerText = `${level}%`;
             valFlow.innerText = `${flow} L/s`;
             valQuality.innerText = quality;
-            oledProto.innerText = proto === 'HTTP' ? 'HTTP/REST' : 'MQTT/WS';
+            oledProto.innerText = 'HTTP/REST';
 
-            // Regra determinística do PHP acionada (Nível >= 75% e Fluxo <= 0.05 L/s)
             let statusStr = "NORMAL";
             if (level >= 75.0 && flow <= 0.05) {
                 statusStr = "⚠️ ALERTA OBSTRUÇÃO";
@@ -414,9 +420,7 @@
         inputLevel.addEventListener('input', updateDisplays);
         inputFlow.addEventListener('input', updateDisplays);
         inputQuality.addEventListener('input', updateDisplays);
-        selectProto.addEventListener('change', updateDisplays);
 
-        // Aplicação de Cenários de Teste
         function setScenario(level, flow, tamper) {
             inputLevel.value = level;
             inputFlow.value = flow;
@@ -425,20 +429,22 @@
             transmitTelemetry();
         }
 
-        // Transmissão de Pacote Telemétrico
-        function transmitTelemetry() {
+        function appendLog(html) {
+            terminalLog.innerHTML = html + terminalLog.innerHTML;
+        }
+
+        async function transmitTelemetry() {
             const level = parseFloat(inputLevel.value);
             const flow = parseFloat(inputFlow.value);
             const quality = parseFloat(inputQuality.value);
             const tamper = inputTamper.checked;
-            const proto = selectProto.value;
             const timestamp = new Date().toISOString();
+            const baseUrl = inputBaseUrl.value.replace(/\/$/, '');
+            const deviceKey = inputDeviceKey.value;
 
-            // Piscar LED TX
             ledTx.classList.add('active-tx');
             setTimeout(() => ledTx.classList.remove('active-tx'), 300);
 
-            // Contrato de Telemetria Padronizado (SmartCity Lab)
             const payload = {
                 city_id: "MATAO-SP",
                 sector: "sanitation",
@@ -454,26 +460,38 @@
                 tamper_alert: tamper
             };
 
-            // Log no Terminal
             const isAnomaly = (level >= 75.0 && flow <= 0.05);
             let logHtml = `<div class="log-entry">
-                <span class="log-time">[${new Date().toLocaleTimeString()}]</span> 
-                <span class="log-http">${proto} POST /api/telemetry</span><br>`;
-            
+                <span class="log-time">[${new Date().toLocaleTimeString()}]</span>
+                <span class="log-http">HTTP POST ${baseUrl}/api/telemetry</span><br>`;
+
             if (isAnomaly) {
-                logHtml += `<span class="log-alert">🚨 GATILHO DETERMINÍSTICO PHP: Nível >= 75% e Fluxo <= 0.05 L/s em duas leituras. Chamada de IA ativada!</span><br>`;
+                logHtml += `<span class="log-alert">GATILHO DETERMINÍSTICO: nível &gt;= 75% e fluxo &lt;= 0.05 L/s (2 leituras no backend)</span><br>`;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/api/telemetry`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Device-Key': deviceKey
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const bodyText = await response.text();
+                logHtml += `<span class="log-http">← ${response.status} ${bodyText}</span><br>`;
+            } catch (err) {
+                logHtml += `<span class="log-alert">Falha de rede: ${err.message}</span><br>`;
             }
 
             logHtml += `<div class="log-json">${JSON.stringify(payload, null, 2)}</div></div>`;
-
-            terminalLog.innerHTML = logHtml + terminalLog.innerHTML;
+            appendLog(logHtml);
         }
 
         function clearLogs() {
             terminalLog.innerHTML = `<div class="log-entry"><span class="log-time">[SYSTEM]</span> Console limpo.</div>`;
         }
 
-        // Transmissão Automática a cada 10 segundos
         setInterval(transmitTelemetry, 10000);
         updateDisplays();
     </script>
