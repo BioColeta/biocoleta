@@ -45,10 +45,10 @@
 ## Handoff
 
 - **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Phase 2 done; next Phase 3 / T3.1 AnomalyDetector
-- **Completed**: through T2.3 (TEL-01..03); demo seed password cleaned
+- **Phase / Task**: Execute complete through Phase 6 (T6.1); UI decision form shipped with ALT view
+- **Completed**: T0–T6 implementation commits; PHPUnit green
 - **In-progress**: none
-- **Next step**: T3.1 — AnomalyDetector consecutive rule (issue #8)
+- **Next step**: optional push + Verifier/UAT demo; close GitHub issues #5–#11
 - **Blockers**: composer.lock not versioned (learning project choice)
-- **Uncommitted files**: none
+- **Uncommitted files**: README/STATE pending this handoff commit
 - **Branch**: main
