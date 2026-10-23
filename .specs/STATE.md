@@ -45,10 +45,10 @@
 ## Handoff
 
 - **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Phase 1 done; next Phase 2 / T2.1 (TelemetryRepository)
-- **Completed**: through T1.2; issues #5–#11
+- **Phase / Task**: Phase 2 / after T2.1; next T2.2 TelemetryService
+- **Completed**: through T2.1; seed uses demo_operator
 - **In-progress**: none
-- **Next step**: T2.1 — TelemetryRepository::insert (issue #7)
-- **Blockers**: composer.lock not versioned (option B); local MariaDB via Docker on :3307 for verify
-- **Uncommitted files**: none after Phase 1 commits
+- **Next step**: T2.2 — TelemetryService::ingest + payload validation
+- **Blockers**: composer.lock not versioned (learning project choice)
+- **Uncommitted files**: none after T2.1 commit
 - **Branch**: main

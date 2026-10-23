@@ -5,7 +5,7 @@
 INSERT INTO users (username, password_hash)
 VALUES (
     'operator',
-    '$2y$12$5ToNRJp06DMK44r7uO8gneyKnMtELvqzbI5v0WVZyCKURLlTRCJ5G'
+    '$2y$12$eYfbi5US2WACEl231lkt9eksLn8s8IM2BsUU7KhvYCg4AyMrj49mq'
 );
 
 INSERT INTO devices (device_id, entity_id, active)
