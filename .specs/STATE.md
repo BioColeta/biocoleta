@@ -45,10 +45,10 @@
 ## Handoff
 
 - **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Phase 0 done; next Phase 1 / T1.1 (DB schema)
-- **Completed**: scaffold 8b13a96; T0.1 ab712f5; T0.2 (this commit); issues #5–#11
+- **Phase / Task**: Phase 1 done; next Phase 2 / T2.1 (TelemetryRepository)
+- **Completed**: through T1.2; issues #5–#11
 - **In-progress**: none
-- **Next step**: T1.1 — database/migrations/001_init.sql (issue #6)
-- **Blockers**: composer.lock not versioned (composer.lock omitted by project choice)
-- **Uncommitted files**: none after T0.2 commit
+- **Next step**: T2.1 — TelemetryRepository::insert (issue #7)
+- **Blockers**: composer.lock not versioned (option B); local MariaDB via Docker on :3307 for verify
+- **Uncommitted files**: none after Phase 1 commits
 - **Branch**: main
