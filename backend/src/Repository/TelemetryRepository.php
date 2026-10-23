@@ -6,7 +6,7 @@ namespace BioColeta\Repository;
 
 use PDO;
 
-final class TelemetryRepository
+class TelemetryRepository
 {
     public function __construct(private readonly PDO $pdo)
     {
@@ -62,4 +62,20 @@ final class TelemetryRepository
 
         return $row === false ? null : $row;
     }
+
+    /** @return list<array<string, mixed>> newest first */
+    public function findLatestByDevice(string $deviceId, int $limit): array
+    {
+        $limit = max(1, $limit);
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM telemetry
+             WHERE device_id = :device_id
+             ORDER BY id DESC
+             LIMIT {$limit}"
+        );
+        $stmt->execute(['device_id' => $deviceId]);
+
+        return $stmt->fetchAll();
+    }
 }
+
