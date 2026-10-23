@@ -4,3 +4,5 @@ docs/*.pdf
 vendor/
 backend/vendor/
 .env
+backend/composer.lock
+backend/.phpunit.cache/

@@ -45,10 +45,10 @@
 ## Handoff
 
 - **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Plan scaffold complete; awaiting Execute (T0.1)
-- **Completed**: spec, context, design, tasks, folder scaffold, GitHub issues #5–#11 (milestone MVP-demo)
-- **In-progress**: none
-- **Next step**: On explicit request, Execute Phase 0 — Composer + PHPUnit bootstrap (T0.1)
+- **Phase / Task**: Execute Phase 0 / T0.1 — Composer + PHPUnit
+- **Completed**: SDD scaffold commit 8b13a96; issues #5–#11
+- **In-progress**: T0.1
+- **Next step**: Finish T0.1 then T0.2 config skeleton
 - **Blockers**: none
-- **Uncommitted files**: `.specs/`, `backend/`, `frontend/`, `database/`, `simulador/`, README (simulador-iot removed)
-- **Branch**: main (or current working branch)
+- **Uncommitted files**: none at handoff start of T0.1
+- **Branch**: main (ahead of origin by 1)
