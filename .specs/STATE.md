@@ -45,10 +45,10 @@
 ## Handoff
 
 - **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Execute Phase 0 / T0.1 — Composer + PHPUnit
-- **Completed**: SDD scaffold commit 8b13a96; issues #5–#11
-- **In-progress**: T0.1
-- **Next step**: Finish T0.1 then T0.2 config skeleton
-- **Blockers**: none
-- **Uncommitted files**: none at handoff start of T0.1
-- **Branch**: main (ahead of origin by 1)
+- **Phase / Task**: Phase 0 done; next Phase 1 / T1.1 (DB schema)
+- **Completed**: scaffold 8b13a96; T0.1 ab712f5; T0.2 (this commit); issues #5–#11
+- **In-progress**: none
+- **Next step**: T1.1 — database/migrations/001_init.sql (issue #6)
+- **Blockers**: composer.lock not versioned (composer.lock omitted by project choice)
+- **Uncommitted files**: none after T0.2 commit
+- **Branch**: main
