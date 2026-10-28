@@ -42,7 +42,7 @@ final class AnomalyDetectionFlowTest extends TestCase
 
     private string $deviceId;
 
-    public function test_two_anomalous_readings_create_one_pending_alert(): void
+    public function test_two_anomalous_readings_create_one_new_alert(): void
     {
         $payload = fn (float $level, float $flow): array => [
             'entity_id' => 'BUEIRO-TEST',
@@ -62,10 +62,10 @@ final class AnomalyDetectionFlowTest extends TestCase
 
         $third = $this->service->ingest($payload(91.0, 0.0));
         // May create another alert for new pair (2nd,3rd) — DET-03 is same pair dedupe.
-        // Ensure first alert exists and is pending with structure.
+        // Ensure first alert exists and is new with structure.
         $alert = $this->alerts->findById((int) $second['alert_id']);
         self::assertNotNull($alert);
-        self::assertSame('pending', $alert['status']);
+        self::assertSame('new', $alert['status']);
         $classification = json_decode((string) $alert['classification_json'], true);
         self::assertSame(AnomalyDetector::RULE_ID, $classification['rule_id']);
         self::assertCount(2, $classification['telemetry_ids']);

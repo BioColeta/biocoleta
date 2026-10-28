@@ -26,11 +26,23 @@ final class AnomalyDetector
     public function evaluateAfterInsert(string $deviceId, int $telemetryId): ?array
     {
         $readings = $this->telemetryRepository->findLatestByDevice($deviceId, self::CONSECUTIVE);
+        if ($readings === []) {
+            return null;
+        }
+
+        // findLatest returns newest first; the latest reading is the one just inserted.
+        $latest = $readings[0];
+        if (!$this->isAnomalous((float) $latest['water_level'], (float) $latest['water_flow'])) {
+            // Telemetry back to normal → close any open/confirmed obstruction.
+            $this->alertRepository->autoClearForDevice($deviceId);
+            return null;
+        }
+
         if (count($readings) < self::CONSECUTIVE) {
             return null;
         }
 
-        // findLatest returns newest first; normalize oldest → newest for pair
+        // normalize oldest → newest for pair
         $pair = array_reverse($readings);
         foreach ($pair as $reading) {
             if (!$this->isAnomalous((float) $reading['water_level'], (float) $reading['water_flow'])) {

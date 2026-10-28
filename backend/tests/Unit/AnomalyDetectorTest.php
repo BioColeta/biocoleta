@@ -51,6 +51,22 @@ final class AnomalyDetectorTest extends TestCase
         self::assertNull($detector->evaluateAfterInsert('ESP32-DRAIN-0102', 2));
     }
 
+    public function test_normal_reading_auto_clears_open_alerts(): void
+    {
+        $telemetry = $this->createMock(TelemetryRepository::class);
+        $telemetry->method('findLatestByDevice')->willReturn([
+            ['id' => 5, 'water_level' => 30, 'water_flow' => 1.8],
+        ]);
+
+        $alerts = $this->createMock(AlertRepository::class);
+        $alerts->expects(self::once())->method('autoClearForDevice')->with('ESP32-DRAIN-0102')->willReturn(1);
+        $alerts->expects(self::never())->method('create');
+
+        $detector = new AnomalyDetector($telemetry, $alerts);
+
+        self::assertNull($detector->evaluateAfterInsert('ESP32-DRAIN-0102', 5));
+    }
+
     public function test_dedupe_skips_existing_pair(): void
     {
         $detector = $this->detectorWith([

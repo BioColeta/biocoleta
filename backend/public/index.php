@@ -9,13 +9,13 @@ use BioColeta\Http\AuthController;
 use BioColeta\Http\JsonResponse;
 use BioColeta\Http\SessionGate;
 use BioColeta\Http\TelemetryController;
+use BioColeta\Http\View;
 use BioColeta\Repository\AlertRepository;
 use BioColeta\Repository\DecisionRepository;
 use BioColeta\Repository\TelemetryRepository;
 use BioColeta\Repository\UserRepository;
 use BioColeta\Service\AlertService;
 use BioColeta\Service\TelemetryService;
-use Throwable;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -49,7 +49,7 @@ if (str_starts_with($path, '/assets/')) {
 
 try {
     $pdo = ConnectionFactory::fromConfig($config['db']);
-} catch (Throwable $e) {
+} catch (\Throwable $e) {
     if (str_starts_with($path, '/api/')) {
         JsonResponse::send(503, ['error' => 'service_unavailable']);
         exit;
@@ -67,6 +67,14 @@ $alertService = new AlertService($alertRepository, $decisionRepository);
 $authController = new AuthController($userRepository, $viewsPath);
 $alertController = new AlertController($alertService, $viewsPath);
 
+if ($method === 'GET' && ($path === '/simulador' || $path === '/simulador/')) {
+    $file = dirname(__DIR__, 2) . '/simulador/simulador-v1.html';
+    header('Content-Type: text/html; charset=utf-8');
+    header('Cache-Control: no-store');
+    readfile($file);
+    exit;
+}
+
 if ($method === 'POST' && $path === '/api/telemetry') {
     $detector = new AnomalyDetector($telemetryRepository, $alertRepository);
     $controller = new TelemetryController(
@@ -80,7 +88,11 @@ if ($method === 'POST' && $path === '/api/telemetry') {
 SessionGate::start();
 
 if ($path === '/' && $method === 'GET') {
-    header('Location: ' . (SessionGate::userId() ? '/alerts' : '/login'));
+    if (SessionGate::userId()) {
+        header('Location: /alerts');
+        exit;
+    }
+    View::render($viewsPath, 'home');
     exit;
 }
 
@@ -99,6 +111,11 @@ if ($path === '/logout' && $method === 'POST') {
     exit;
 }
 
+if ($path === '/api/alerts' && $method === 'GET') {
+    $alertController->listJson();
+    exit;
+}
+
 if ($path === '/alerts' && $method === 'GET') {
     $alertController->index();
     exit;
@@ -106,6 +123,11 @@ if ($path === '/alerts' && $method === 'GET') {
 
 if ($method === 'POST' && preg_match('#^/alerts/(\d+)/decision$#', $path, $matches) === 1) {
     $alertController->decide((int) $matches[1]);
+    exit;
+}
+
+if ($method === 'POST' && preg_match('#^/api/alerts/(\d+)/status$#', $path, $matches) === 1) {
+    $alertController->move((int) $matches[1]);
     exit;
 }
 
