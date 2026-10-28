@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BioColeta — Apresentação MVP</title>
+  <style>
+    :root {
+      --bg: #081b21;
+      --surface: #102b32;
+      --surface-raised: #153840;
+      --text: #effcfb;
+      --muted: #9bb8b9;
+      --accent: #66e3ca;
+      --accent-strong: #b8f5e7;
+      --warning: #f2c66d;
+      --danger: #f48a83;
+      --ok: #70ddb5;
+      --border: rgba(174, 236, 224, 0.16);
+      --code-key: #66e3ca;
+      --code-str: #b8f5e7;
+      --code-num: #f2c66d;
+      --code-bool: #f48a83;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background:
+        radial-gradient(circle at 88% -10%, rgba(61, 155, 145, 0.22), transparent 38rem),
+        radial-gradient(circle at 8% 110%, rgba(102, 227, 202, 0.08), transparent 28rem),
+        var(--bg);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(2rem, 5vw, 4.5rem) clamp(2rem, 7vw, 6rem) 4.5rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 280ms ease, transform 280ms ease;
+    }
+    .slide.is-active {
+      display: flex;
+      opacity: 1;
+      transform: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.75rem;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.045em;
+    }
+    h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+      letter-spacing: -0.03em;
+    }
+    .lede {
+      max-width: 42rem;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+      line-height: 1.55;
+    }
+    .brand-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.4rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 0.7rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 800;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      align-items: stretch;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.4rem;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+      margin-top: 1.4rem;
+    }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      padding: 1.1rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: rgba(16, 43, 50, 0.72);
+    }
+    .card h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+    }
+    .card p, .card li {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+    .card li + li { margin-top: 0.35rem; }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1.3rem;
+    }
+    .pill {
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(21, 56, 64, 0.8);
+      color: var(--accent-strong);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+    .flow-step {
+      padding: 0.7rem 0.95rem;
+      border-radius: 0.8rem;
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .flow-arrow {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .arch {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.65rem;
+      margin-top: 1.5rem;
+    }
+    .arch-box {
+      text-align: center;
+      padding: 1rem 0.7rem;
+      border-radius: 0.9rem;
+      border: 1px solid var(--border);
+      background: rgba(16, 43, 50, 0.85);
+    }
+    .arch-box strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--accent-strong);
+      font-size: 0.95rem;
+    }
+    .arch-box span {
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+    @media (max-width: 900px) {
+      .arch { grid-template-columns: 1fr 1fr; }
+    }
+
+    .video-wrap {
+      margin-top: 1rem;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      max-height: min(62vh, 640px);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+    }
+    .video-wrap video {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(62vh, 640px);
+      object-fit: contain;
+      background: #000;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+      margin-top: 1.3rem;
+    }
+    .method-grid .card h3 { color: var(--accent-strong); }
+    @media (max-width: 900px) {
+      .method-grid { grid-template-columns: 1fr; }
+    }
+
+    .json-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 1.2rem;
+      margin-top: 1.1rem;
+      align-items: stretch;
+      min-height: 0;
+    }
+    @media (max-width: 980px) {
+      .json-layout { grid-template-columns: 1fr; }
+    }
+    .code-block {
+      margin: 0;
+      padding: 1rem 1.15rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      background: #061419;
+      overflow: auto;
+      max-height: min(58vh, 520px);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: clamp(0.72rem, 1.05vw, 0.88rem);
+      line-height: 1.45;
+      color: var(--muted);
+      white-space: pre;
+    }
+    .code-block .k { color: var(--code-key); }
+    .code-block .s { color: var(--code-str); }
+    .code-block .n { color: var(--code-num); }
+    .code-block .b { color: var(--code-bool); }
+    .json-notes .card + .card { margin-top: 0.75rem; }
+
+    .footer-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem clamp(1.2rem, 4vw, 2.5rem);
+      border-top: 1px solid var(--border);
+      background: rgba(8, 27, 33, 0.88);
+      backdrop-filter: blur(10px);
+      z-index: 5;
+    }
+    .dots {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      max-width: 55vw;
+    }
+    .dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      border: 0;
+      padding: 0;
+      background: rgba(155, 184, 185, 0.35);
+      cursor: pointer;
+    }
+    .dot.is-active { background: var(--accent); }
+    .nav-hint {
+      color: var(--muted);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    .counter {
+      color: var(--accent-strong);
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .title-meta {
+      margin-top: 1.8rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .title-meta strong { color: var(--text); }
+
+    .highlight { color: var(--accent-strong); }
+    .warn { color: var(--warning); }
+    .ok { color: var(--ok); }
+
+    .team {
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+
+    <section class="slide is-active" data-title="Capa">
+      <div class="brand-line"><span class="mark">B</span> BioColeta</div>
+      <p class="eyebrow">Apresentação técnica · MVP</p>
+      <h1>Monitoramento preventivo<br />de drenagem urbana</h1>
+      <p class="lede">
+        Sensor simulado → regra de obstrução → mapa do operador →
+        decisão humana com registro.
+      </p>
+      <p class="title-meta">
+        <strong>Tecnologias:</strong> PHP 8 · MariaDB · Docker · páginas web · simulador HTTP<br />
+        Spec primeiro · operador decide
+      </p>
+      <p class="team">
+        César · Jerônimo · Miguel · Rafael · Victor
+      </p>
+    </section>
+
+    <section class="slide" data-title="Contexto">
+      <p class="eyebrow">01 · Contexto</p>
+      <h2>Cidade + sensores + operação</h2>
+      <p class="lede">
+        Hoje as cidades costumam agir <span class="warn">depois</span> do alagamento.
+        O BioColeta mostra o caminho inverso: <span class="highlight">detectar antes</span>.
+      </p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Onde atua</h3>
+          <p>Bueiros e rede de drenagem — nível de água e fluxo mostram se a água está escoando bem.</p>
+        </div>
+        <div class="card">
+          <h3>ODS</h3>
+          <p>6 (água), 11 (cidades), 12 (uso de recursos), 13 (clima / chuvas fortes).</p>
+        </div>
+        <div class="card">
+          <h3>Escopo do MVP</h3>
+          <p>Ciclo completo e demonstrável — sem IA ainda, sem envio automático de equipes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Problema">
+      <p class="eyebrow">02 · Problema</p>
+      <h2>O problema só aparece depois da enchente</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Hoje</h3>
+          <ul>
+            <li>Bueiro entupido só é notado com a rua alagada</li>
+            <li>Não há acompanhamento contínuo dos pontos críticos</li>
+            <li>Manutenção só depois do prejuízo</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>O que falta</h3>
+          <ul>
+            <li>Leituras confiáveis (nível + fluxo)</li>
+            <li>Aviso cedo de possível entupimento</li>
+            <li>Operador que vê, decide e registra</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pill-row">
+        <span class="pill">Transtorno urbano</span>
+        <span class="pill">Prejuízo material</span>
+        <span class="pill">Risco à saúde</span>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Solução">
+      <p class="eyebrow">03 · Solução</p>
+      <h2>Um ciclo curto, do sensor à decisão</h2>
+      <div class="flow">
+        <div class="flow-step">Simulador</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Envia JSON</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Detector</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Alerta no mapa</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Operador decide</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Limpa sozinho</div>
+      </div>
+      <div class="grid-3" style="margin-top:1.4rem">
+        <div class="card">
+          <h3>Regra fixa</h3>
+          <p><code>nível ≥ 75</code> e <code>fluxo ≤ 0,05</code> em <strong>2 leituras</strong> seguidas → gera alerta.</p>
+        </div>
+        <div class="card">
+          <h3>Mapa simples</h3>
+          <p>Bueiro normal ou obstruído. Operador confirma ou marca falso positivo.</p>
+        </div>
+        <div class="card">
+          <h3>Volta ao normal</h3>
+          <p>Quando a leitura normaliza, o sistema limpa o estado sozinho.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Arquitetura">
+      <p class="eyebrow">04 · Arquitetura</p>
+      <h2>Peças que conversam de ponta a ponta</h2>
+      <div class="arch">
+        <div class="arch-box">
+          <strong>Simulador</strong>
+          <span>Página HTML<br />envia HTTP</span>
+        </div>
+        <div class="arch-box">
+          <strong>API PHP</strong>
+          <span>Recebe · detecta<br />alerta · decisão</span>
+        </div>
+        <div class="arch-box">
+          <strong>MariaDB</strong>
+          <span>Leituras<br />alertas · histórico</span>
+        </div>
+        <div class="arch-box">
+          <strong>Telas PHP</strong>
+          <span>Hub · login<br />mapa de alertas</span>
+        </div>
+        <div class="arch-box">
+          <strong>Operador</strong>
+          <span>Confirma ou<br />falso positivo</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:1.3rem">
+        <div class="card">
+          <h3>O que construímos</h3>
+          <p>Envio de dados, detector, banco, login e tela de alertas — tudo usado no demo.</p>
+        </div>
+        <div class="card">
+          <h3>O que deixamos de fora</h3>
+          <p>IA, MQTT, ordem de serviço automática, várias cidades — só quando precisar (YAGNI).</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Tecnologia">
+      <p class="eyebrow">05 · Tecnologia</p>
+      <h2>Stack simples e objetiva</h2>
+      <div class="grid-4">
+        <div class="card"><h3>PHP 8</h3><p>API e regras de negócio em orientação a objetos.</p></div>
+        <div class="card"><h3>MariaDB</h3><p>Guarda leituras, alertas e decisões do operador.</p></div>
+        <div class="card"><h3>Docker</h3><p>Banco local fácil de subir e repetir.</p></div>
+        <div class="card"><h3>Páginas PHP</h3><p>Hub, login e mapa com um pouco de JavaScript.</p></div>
+      </div>
+      <div class="pill-row">
+        <span class="pill">HTTP / REST</span>
+        <span class="pill">Chave do dispositivo</span>
+        <span class="pill">Testes PHPUnit</span>
+        <span class="pill">Simulador HTML</span>
+        <span class="pill">Specs em .specs/</span>
+      </div>
+    </section>
+
+    <section class="slide" data-title="JSON">
+      <p class="eyebrow">06 · Contrato JSON</p>
+      <h2>Como o simulador “fala” com a API</h2>
+      <div class="json-layout">
+        <pre class="code-block" aria-label="Exemplo de JSON enviado pelo simulador">{
+<span class="k">POST</span> /api/telemetry
+Header: X-Device-Key
+
+{
+  <span class="k">"city_id"</span>: <span class="s">"MATAO-SP"</span>,
+  <span class="k">"sector"</span>: <span class="s">"sanitation"</span>,
+  <span class="k">"entity_type"</span>: <span class="s">"drain"</span>,
+  <span class="k">"entity_id"</span>: <span class="s">"BUEIRO-0102"</span>,
+  <span class="k">"device_id"</span>: <span class="s">"ESP32-DRAIN-0102"</span>,
+  <span class="k">"timestamp"</span>: <span class="s">"2026-10-27T21:20:00.000Z"</span>,
+  <span class="k">"readings"</span>: [
+    {
+      <span class="k">"sensor_id"</span>: <span class="s">"WATER-LEVEL-01"</span>,
+      <span class="k">"measurement"</span>: <span class="s">"water_level"</span>,
+      <span class="k">"value"</span>: <span class="n">82.0</span>,
+      <span class="k">"unit"</span>: <span class="s">"percent"</span>
+    },
+    {
+      <span class="k">"sensor_id"</span>: <span class="s">"WATER-FLOW-01"</span>,
+      <span class="k">"measurement"</span>: <span class="s">"water_flow"</span>,
+      <span class="k">"value"</span>: <span class="n">0.02</span>,
+      <span class="k">"unit"</span>: <span class="s">"L/s"</span>
+    }
+  ],
+  <span class="k">"quality"</span>: <span class="n">0.9</span>,
+  <span class="k">"tamper_alert"</span>: <span class="b">false</span>
+}</pre>
+        <div class="json-notes">
+          <div class="card">
+            <h3>Leitura normal</h3>
+            <p>Nível baixo e fluxo ok → só grava no banco. Sem alerta.</p>
+          </div>
+          <div class="card">
+            <h3>Obstrução (exemplo ao lado)</h3>
+            <p>Nível alto + fluxo quase zero, <strong>duas vezes seguidas</strong> → cria alerta.</p>
+          </div>
+          <div class="card">
+            <h3>Resposta da API</h3>
+            <p><code>201</code> com o id da leitura. Se a regra bater, o alerta aparece no mapa.</p>
+          </div>
+          <div class="card">
+            <h3>Classificação gravada</h3>
+            <p>Regra <code>obstruction_level_flow_v1</code>, limiares e ids das 2 leituras — no lugar da IA no MVP.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Demo Hub" data-video="hub">
+      <p class="eyebrow">07 · Demo · Hub</p>
+      <h2>Entrada do produto</h2>
+      <div class="video-wrap">
+        <video id="video-hub" src="videos/hub.mp4" controls playsinline preload="metadata"></video>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Demo Simulador" data-video="simulador">
+      <p class="eyebrow">08 · Demo · Simulador</p>
+      <h2>Envio contínuo + cenário de entupimento</h2>
+      <div class="video-wrap">
+        <video id="video-simulador" src="videos/simulador.mp4" controls playsinline preload="metadata"></video>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Demo Alertas" data-video="alertas">
+      <p class="eyebrow">09 · Demo · Alertas</p>
+      <h2>Mapa, evidência e decisão do operador</h2>
+      <div class="video-wrap">
+        <video id="video-alertas" src="videos/alertas.mp4" controls playsinline preload="metadata"></video>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Metodologia">
+      <p class="eyebrow">10 · Metodologia</p>
+      <h2>Por que não sobrou estrutura parada</h2>
+      <div class="method-grid">
+        <div class="card">
+          <h3>SDD</h3>
+          <p>Especificamos antes de codar. O que entra e o que fica de fora fica escrito em <code>.specs/</code>.</p>
+        </div>
+        <div class="card">
+          <h3>MVP</h3>
+          <p>Menor caminho que prova valor: receber → detectar → decidir.</p>
+        </div>
+        <div class="card">
+          <h3>YAGNI</h3>
+          <p>“Você não vai precisar disso” — IA, MQTT e ordem de serviço ficam para depois.</p>
+        </div>
+        <div class="card">
+          <h3>KISS</h3>
+          <p>Regra simples e legível primeiro. Modelo complexo só quando fizer falta.</p>
+        </div>
+        <div class="card">
+          <h3>Kanban</h3>
+          <p>Fluxo contínuo: especificar → construir → validar, sem sprint rígida.</p>
+        </div>
+        <div class="card">
+          <h3>Entrega completa</h3>
+          <p>Cada item passa por API, banco e tela — nada de camada pronta sem uso.</p>
+        </div>
+        <div class="card">
+          <h3>Operador no controle</h3>
+          <p>Ação crítica só com humano. A máquina avisa; quem decide é o operador.</p>
+        </div>
+        <div class="card">
+          <h3>Errar cedo</h3>
+          <p>Validar o ciclo com simulador antes de sensor real ou IA.</p>
+        </div>
+        <div class="card">
+          <h3>Rastreio</h3>
+          <p>Alerta e decisão ficam registrados: quem, quando e com qual evidência.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Governança">
+      <p class="eyebrow">11 · Visão · regras</p>
+      <h2>IA sugere. PHP decide o fluxo. Humano aprova.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Documento de visão</h3>
+          <ul>
+            <li>IA classifica anomalia — <span class="warn">não manda equipe</span></li>
+            <li>Operador confirma antes de qualquer ordem de serviço</li>
+            <li>Permissões e alertas oficiais ficam no PHP</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>No MVP de hoje</h3>
+          <ul>
+            <li>Detector com <span class="ok">regra fixa</span> no lugar da IA</li>
+            <li>Mesmo formato de alerta e decisão</li>
+            <li>Espaço reservado para a IA — sem código morto</li>
+          </ul>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:1.4rem;max-width:48rem">
+        Princípio: <span class="highlight">confiança na operação primeiro</span>,
+        ajuda da IA depois.
+      </p>
+    </section>
+
+    <section class="slide" data-title="Próximos passos">
+      <p class="eyebrow">12 · Próximos passos</p>
+      <h2>Do MVP à visão completa</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Classificador de IA</h3>
+          <p>Histórico recente → API de IA → resposta estruturada. Prompts versionados no banco.</p>
+        </div>
+        <div class="card">
+          <h3>2. Sensor de campo</h3>
+          <p>Dispositivo real, chave por equipamento e, se precisar, MQTT.</p>
+        </div>
+        <div class="card">
+          <h3>3. Operação</h3>
+          <p>Ordem de serviço com aprovação humana, mais cidades e mapa com localização real.</p>
+        </div>
+      </div>
+      <div class="pill-row">
+        <span class="pill">Manter operador no controle</span>
+        <span class="pill">Evoluir pela spec</span>
+        <span class="pill">Não quebrar o demo</span>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Encerramento">
+      <h1>Muito obrigado</h1>
+      <p class="lede" style="margin-top:1rem;font-size:clamp(1.4rem, 2.4vw, 2rem);color:var(--accent-strong)">
+        Perguntas?
+      </p>
+    </section>
+  </div>
+
+  <div class="footer-bar">
+    <div class="dots" id="dots"></div>
+    <span class="counter" id="counter">1 / 1</span>
+    <span class="nav-hint">← → · Space · F tela cheia</span>
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsEl = document.getElementById("dots");
+      const counter = document.getElementById("counter");
+      let index = 0;
+
+      slides.forEach((_, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "dot" + (i === 0 ? " is-active" : "");
+        b.setAttribute("aria-label", "Slide " + (i + 1));
+        b.addEventListener("click", () => go(i));
+        dotsEl.appendChild(b);
+      });
+      const dots = Array.from(dotsEl.children);
+
+      function pauseAllVideos() {
+        document.querySelectorAll("video").forEach((v) => v.pause());
+      }
+
+      function playSlideVideo(slide) {
+        const key = slide.dataset.video;
+        if (!key) return;
+        const v = document.getElementById("video-" + key);
+        if (!v) return;
+        v.currentTime = 0;
+        const p = v.play();
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      }
+
+      function go(i) {
+        if (i < 0 || i >= slides.length) return;
+        pauseAllVideos();
+        slides[index].classList.remove("is-active");
+        dots[index].classList.remove("is-active");
+        index = i;
+        slides[index].classList.add("is-active");
+        dots[index].classList.add("is-active");
+        counter.textContent = (index + 1) + " / " + slides.length;
+        playSlideVideo(slides[index]);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+          e.preventDefault();
+          go(index + 1);
+        } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+          e.preventDefault();
+          go(index - 1);
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          go(0);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          go(slides.length - 1);
+        } else if (e.key === "f" || e.key === "F") {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen?.();
+          } else {
+            document.exitFullscreen?.();
+          }
+        }
+      });
+
+      let touchX = null;
+      document.addEventListener("touchstart", (e) => {
+        touchX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      document.addEventListener("touchend", (e) => {
+        if (touchX == null) return;
+        const dx = e.changedTouches[0].screenX - touchX;
+        touchX = null;
+        if (Math.abs(dx) < 50) return;
+        go(index + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      counter.textContent = "1 / " + slides.length;
+    })();
+  </script>
+</body>
+</html>
