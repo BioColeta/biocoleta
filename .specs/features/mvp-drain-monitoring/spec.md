@@ -31,7 +31,7 @@ Urban drainage failures are often noticed only after flooding. BioColeta needs a
 | Anomaly rule | `water_level >= 75` AND `water_flow <= 0.05` on **2 consecutive** readings for same `device_id` | Matches existing simulador UI/log | y (plan default) |
 | Operator auth | PHP session; one seeded user | MVP demo | y (plan default) |
 | Device auth | Header `X-Device-Key` required on telemetry POST | Prevents open ingest | y (plan default) |
-| Decision values | `confirmado` \| `falso_positivo` + optional short note | Human-in-the-loop without OS | y (plan default) |
+| Decision values | `confirmado` \| `falso_positivo` | Human-in-the-loop without OS | y (plan default) |
 | Telemetry payload shape | Contract already in `simulador-v1.html` (city_id, device_id, readings[], …) | Reuse existing contract | y |
 | Test stack | PHPUnit for domain/unit; manual/scripted HTTP for ingest demo until CI exists | Greenfield repo | n — confirm at Execute |
 
@@ -65,9 +65,9 @@ Urban drainage failures are often noticed only after flooding. BioColeta needs a
 
 **Acceptance Criteria**:
 
-1. WHEN two consecutive persisted readings for the same `device_id` both satisfy `water_level >= 75` AND `water_flow <= 0.05` THEN the system SHALL create an alert with status `pending` and a structured classification payload (rule id, thresholds, reading ids)
+1. WHEN two consecutive persisted readings for the same `device_id` both satisfy `water_level >= 75` AND `water_flow <= 0.05` THEN the system SHALL create an alert with status `new` and a structured classification payload (rule id, thresholds, reading ids)
 2. WHEN readings are normal (outside the rule) THEN the system SHALL NOT create an alert
-3. WHEN an alert already exists as `pending` for the same device from the same consecutive pair THEN the system SHALL NOT create a duplicate alert for that pair
+3. WHEN an alert already exists for the same device from the same consecutive pair THEN the system SHALL NOT create a duplicate alert for that pair
 
 **Independent Test**: Insert/post two anomalous readings; assert one alert with structured fields; post normal readings; assert no new alert.
 
@@ -75,14 +75,14 @@ Urban drainage failures are often noticed only after flooding. BioColeta needs a
 
 ### P1: Operator alert panel ⭐ MVP
 
-**User Story**: As an Operador, I want to see pending alerts clearly so that I know which drain needs attention.
+**User Story**: As an Operador, I want to see monitored drains on a simple map so that I know which location needs attention.
 
 **Why P1**: Success criterion 4 (visibility).
 
 **Acceptance Criteria**:
 
-1. WHEN an authenticated Operador opens the alerts page THEN the system SHALL list pending alerts with device id, timestamps, and classification summary
-2. WHEN there are no pending alerts THEN the system SHALL show an explicit empty state
+1. WHEN an authenticated Operador opens the alerts page THEN the system SHALL show one marker per monitored drain with status color, device id, timestamps, and classification summary
+2. WHEN a user selects a drain marker THEN the system SHALL show the alert evidence and recent history for that drain
 3. WHEN an unauthenticated user requests the alerts page THEN the system SHALL redirect to login
 
 **Independent Test**: Seed a pending alert; log in; verify it appears on the panel.
@@ -97,8 +97,10 @@ Urban drainage failures are often noticed only after flooding. BioColeta needs a
 
 **Acceptance Criteria**:
 
-1. WHEN an Operador submits decision `confirmado` or `falso_positivo` with optional note on a `pending` alert THEN the system SHALL persist the decision, set alert status to `resolved`, and record actor + timestamp
-2. WHEN the alert is already `resolved` THEN the system SHALL reject a new decision with `409` or equivalent UI error
+1. WHEN an Operador submits decision `confirmado` on an active alert THEN the system SHALL persist the decision, set alert status to `resolved`, and record actor + timestamp. The drain stays obstructed (red) until telemetry normalizes.
+2. WHEN an Operador submits decision `falso_positivo` on an active alert THEN the system SHALL persist the decision, set alert status to `false_positive`, and record actor + timestamp
+3. WHEN the alert is already `resolved`, `false_positive`, or `cleared` THEN the system SHALL reject a new decision with `409` or equivalent UI error
+4. WHEN a new reading for a device leaves the obstruction rule (`water_level < 75` OR `water_flow > 0.05`) THEN the system SHALL auto-clear that device's open/confirmed alerts to status `cleared`
 
 **Independent Test**: Resolve one alert from the UI; verify DB audit fields; retry resolve and expect rejection.
 

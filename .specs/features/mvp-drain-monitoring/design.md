@@ -86,7 +86,7 @@ flowchart LR
 - **Location**: `backend/src/Service/AlertService.php`, `backend/src/Http/AlertController.php`
 - **Interfaces**:
   - `listPending(): array`
-  - `decide(int $alertId, string $outcome, ?string $note, int $userId): void`
+  - `decide(int $alertId, string $outcome, int $userId): void`
 
 ### AuthController / SessionGate
 
@@ -110,6 +110,8 @@ flowchart LR
 | id | PK | |
 | device_id | VARCHAR unique | e.g. ESP32-DRAIN-0102 |
 | entity_id | VARCHAR | BUEIRO-0102 |
+| latitude | DECIMAL(9,6) nullable | map projection |
+| longitude | DECIMAL(9,6) nullable | map projection |
 | active | BOOL | |
 
 ### telemetry
@@ -133,7 +135,7 @@ flowchart LR
 | ----- | ---- | ----- |
 | id | BIGINT PK | |
 | device_id | VARCHAR | |
-| status | ENUM pending,resolved | |
+| status | ENUM new,investigating,resolved,false_positive,cleared | Map shows Obstruído (new/investigating/resolved) vs Normal (false_positive/cleared); `cleared` is auto-set when telemetry normalizes |
 | rule_id | VARCHAR | obstruction_level_flow_v1 |
 | classification_json | JSON | thresholds, reading ids, values |
 | created_at | DATETIME | |
@@ -147,7 +149,6 @@ flowchart LR
 | alert_id | FK unique | one decision per alert MVP |
 | user_id | FK | |
 | outcome | ENUM confirmado,falso_positivo | |
-| note | TEXT nullable | |
 | created_at | DATETIME | |
 
 ### users
@@ -188,7 +189,7 @@ flowchart LR
 
 - `GET /login`, `POST /login`, `POST /logout`
 - `GET /alerts`
-- `POST /alerts/{id}/decision` — form fields `outcome`, `note`
+- `POST /alerts/{id}/decision` — form field `outcome`
 
 ---
 

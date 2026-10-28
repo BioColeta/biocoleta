@@ -35,8 +35,9 @@ Deliver the MVP demo loop: HTTP telemetry ingest → deterministic obstruction d
 ### Decision recording
 
 - Outcomes: `confirmado` | `falso_positivo`
-- Optional short free-text note
-- Alert moves `pending` → `resolved`; audit who/when
+- Alert states: `new` (active), `resolved` (confirmed, still obstructed), `false_positive`, `cleared` (telemetry back to normal)
+- Operator actions on the map: confirm obstruction or mark false positive only
+- Confirming keeps the drain red; it only turns normal when a new reading leaves the obstruction rule (auto-clear)
 
 ### Agent's Discretion
 
