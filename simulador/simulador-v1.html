@@ -3,294 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioColeta - Simulador IoT de Bancada Virtual (ESP32)</title>
+    <title>BioColeta — Simulador IoT</title>
     <style>
         :root {
-            --bg-dark: #121824;
-            --card-bg: #1e293b;
-            --accent-blue: #38bdf8;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --accent-yellow: #eab308;
-            --text-light: #f8fafc;
-            --text-dim: #94a3b8;
-            --oled-bg: #090d16;
+            --bg: #081b21;
+            --card: #102b32;
+            --text: #effcfb;
+            --muted: #9bb8b9;
+            --accent: #66e3ca;
+            --danger: #f48a83;
+            --ok: #70ddb5;
+            --warn: #f2c66d;
+            --border: rgba(174, 236, 224, 0.16);
+            --input: #0d252b;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            background:
+                radial-gradient(circle at 84% 0%, rgba(61, 155, 145, 0.18), transparent 32rem),
+                var(--bg);
+            color: var(--text);
+            padding: 1.5rem 1rem 2.5rem;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-            width: 100%;
-            max-width: 1100px;
+        .shell {
+            width: min(1100px, 100%);
+            margin: 0 auto;
         }
 
-        header h1 {
-            color: var(--accent-blue);
-            font-size: 1.8rem;
-            margin-bottom: 5px;
+        .topbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem 1rem;
+            align-items: center;
+            padding: 1rem 1.15rem;
+            margin-bottom: 1.25rem;
+            background: rgba(16, 43, 50, 0.86);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.2);
         }
 
-        header p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
+        .topbar strong { font-size: 1.05rem; }
+        .muted { color: var(--muted); }
+        .live-status {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--ok);
         }
+        .brand-mark {
+            display: inline-grid;
+            width: 2rem;
+            height: 2rem;
+            margin-right: 0.5rem;
+            place-items: center;
+            border-radius: 0.65rem;
+            color: #082f49;
+            background: var(--accent);
+            font-weight: 800;
+        }
+        .topbar a { color: var(--text); text-decoration: none; }
 
         .workbench {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 1rem;
         }
 
-        @media (max-width: 850px) {
-            .workbench {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 900px) {
+            .workbench { grid-template-columns: 1fr; }
         }
 
         .panel {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #334155;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
+            padding: 1.1rem 1.15rem 1.25rem;
         }
 
         .panel-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent-blue);
-            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        /* Placa ESP32 e Display OLED */
+        .panel-title h2 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .panel-intro {
+            margin: -0.4rem 0 1.1rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
         .esp32-board {
-            background: #0f172a;
-            border: 2px solid #334155;
+            background: var(--input);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 15px;
-            position: relative;
-            margin-bottom: 20px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1rem;
         }
 
         .status-leds {
             display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .led-group {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            color: var(--text-dim);
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--muted);
         }
 
         .led {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background-color: #475569;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+            background: #475569;
         }
 
-        .led.active-pwr { background-color: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
-        .led.active-wifi { background-color: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue); }
-        .led.active-tx { background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .led.active-pwr { background: var(--danger); box-shadow: 0 0 8px rgba(248, 113, 113, 0.55); }
+        .led.active-wifi { background: var(--accent); box-shadow: 0 0 8px rgba(56, 189, 248, 0.55); }
+        .led.active-tx { background: var(--ok); box-shadow: 0 0 8px rgba(52, 211, 153, 0.55); }
 
         .oled-display {
-            background-color: var(--oled-bg);
-            border: 3px solid #1e293b;
-            border-radius: 6px;
-            padding: 12px;
-            font-family: 'Courier New', Courier, monospace;
-            color: #38bdf8;
-            box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.2);
-            min-height: 100px;
+            background: #020617;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.85rem 0.95rem;
+            font-family: ui-monospace, "Cascadia Code", monospace;
+            color: var(--accent);
+            min-height: 108px;
+            font-size: 0.86rem;
+            line-height: 1.5;
         }
 
         .oled-header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px dashed #0284c7;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-            font-size: 0.8rem;
+            border-bottom: 1px dashed #0369a1;
+            padding-bottom: 0.35rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--muted);
         }
 
-        .oled-body {
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        /* Sliders de Controle */
-        .control-group {
-            margin-bottom: 18px;
-        }
+        .control-group { margin-bottom: 0.95rem; }
 
         .control-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
+            gap: 0.75rem;
+            font-size: 0.88rem;
+            margin-bottom: 0.4rem;
+            color: var(--muted);
         }
 
-        .control-label span.val {
-            font-weight: bold;
-            color: var(--accent-blue);
+        .control-label .val {
+            color: var(--accent);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
 
         input[type="range"] {
             width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #334155;
-            outline: none;
-            accent-color: var(--accent-blue);
-        }
-
-        .toggle-switch {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            background: #0f172a;
-            padding: 10px 14px;
-            border-radius: 8px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 22px;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider-switch {
-            position: absolute;
+            accent-color: var(--accent);
             cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #475569;
-            transition: .3s;
-            border-radius: 22px;
         }
 
-        .slider-switch:before {
-            position: absolute;
-            content: "";
-            height: 16px; width: 16px;
-            left: 3px; bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
+        .field-input {
+            width: 100%;
+            background: var(--input);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.55rem 0.7rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
         }
 
-        input:checked + .slider-switch { background-color: var(--accent-green); }
-        input:checked + .slider-switch:before { transform: translateX(22px); }
+        .field-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(102, 227, 202, 0.12);
+        }
+        .tamper-control {
+            display: grid;
+            gap: 0.6rem;
+            margin-bottom: 0.95rem;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--input);
+        }
+        .choice-label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+        .choice-label strong { color: var(--text); }
+        .choice-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .choice-button {
+            min-height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+        .choice-button.is-active {
+            border-color: var(--accent);
+            color: #082820;
+            background: var(--accent);
+        }
 
-        /* Botões de Ação */
+        .scenarios {
+            margin-top: 0.25rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .scenarios > span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 0.55rem;
+        }
+
         .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 0.5rem;
         }
 
         .btn {
-            background-color: #334155;
-            color: white;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 6px;
+            appearance: none;
+            border: 1px solid var(--border);
+            background: var(--input);
+            color: var(--text);
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
             cursor: pointer;
+            font: inherit;
             font-size: 0.85rem;
             font-weight: 600;
-            transition: all 0.2s;
         }
 
-        .btn:hover { background-color: #475569; }
-        .btn-primary { background-color: #0284c7; }
-        .btn-primary:hover { background-color: #0369a1; }
-        .btn-danger { background-color: #dc2626; }
-        .btn-danger:hover { background-color: #b91c1c; }
-        .btn-warning { background-color: #d97706; }
-        .btn-warning:hover { background-color: #b45309; }
+        .btn:hover { border-color: var(--muted); }
 
-        /* Console Terminal */
-        .terminal {
-            background-color: #090d16;
-            border: 1px solid #334155;
+        .btn-primary {
+            background: var(--accent);
+            border-color: transparent;
+            color: #082f49;
+        }
+        .btn-ghost {
+            color: var(--accent);
+            background: transparent;
+            border-color: var(--border);
+        }
+
+        .btn-warning {
+            background: rgba(251, 191, 36, 0.12);
+            border-color: rgba(251, 191, 36, 0.35);
+            color: var(--warn);
+        }
+
+        .btn-danger {
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.35);
+            color: var(--danger);
+        }
+
+        .btn-ghost {
+            padding: 0.3rem 0.65rem;
+            font-size: 0.75rem;
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .btn-grid--scenarios { grid-template-columns: repeat(3, 1fr); }
+
+        .action-bar {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .btn-send {
+            background: var(--accent);
+            border-color: transparent;
+            color: #082f49;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 0.85rem 0.9rem;
+            box-shadow: 0 0.5rem 1.4rem rgba(102, 227, 202, 0.25);
+        }
+        .btn-send:hover { filter: brightness(1.05); border-color: transparent; }
+
+        .btn-pause {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .btn-pause:hover { color: var(--text); border-color: var(--muted); }
+        .btn-pause.is-paused {
+            border-color: rgba(251, 191, 36, 0.4);
+            color: var(--warn);
+        }
+        .automation-status {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin: 0.7rem 0 0;
+            padding: 0.55rem 0.7rem;
+            border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 12px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.8rem;
-            height: 380px;
+            background: rgba(102, 227, 202, 0.06);
+            font-size: 0.78rem;
+        }
+        .automation-status.is-paused {
+            color: var(--warn);
+            background: rgba(242, 198, 109, 0.08);
+        }
+        .automation-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ok);
+            box-shadow: 0 0 8px var(--ok);
+        }
+        .automation-status.is-paused .automation-dot {
+            background: var(--warn);
+            box-shadow: 0 0 8px var(--warn);
+        }
+
+        .terminal {
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.85rem 0.95rem;
+            font-family: ui-monospace, "Cascadia Code", monospace;
+            font-size: 0.78rem;
+            height: min(62vh, 520px);
             overflow-y: auto;
             color: #a7f3d0;
+            line-height: 1.45;
         }
 
-        .log-entry { margin-bottom: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
-        .log-time { color: var(--text-dim); }
-        .log-http { color: var(--accent-blue); }
-        .log-json { color: #fde047; white-space: pre-wrap; font-size: 0.75rem; }
-        .log-alert { color: var(--accent-red); font-weight: bold; }
+        .log-entry {
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.55rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .log-time { color: var(--muted); }
+        .log-http { color: var(--accent); }
+        .log-json {
+            margin-top: 0.3rem;
+            color: #fde047;
+            white-space: pre-wrap;
+            font-size: 0.72rem;
+        }
+        .log-alert { color: var(--danger); font-weight: 700; }
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>🌱 BioColeta - Simulador IoT (ESP32 Drain Monitor)</h1>
-        <p>Bancada Virtual • Ingestão de Telemetria JSON via HTTP/REST para Drenagem Urbana</p>
+<div class="shell">
+    <header class="topbar">
+        <a href="/"><span class="brand-mark">B</span><strong>BioColeta</strong></a>
+        <span class="muted">Simulador IoT</span>
+        <span class="live-status" id="conn-badge">ao vivo · ESP32-DRAIN-0102</span>
     </header>
 
     <div class="workbench">
-        <!-- PAINEL ESQUERDO: CONTROLES DA BANCADA -->
-        <div class="panel">
+        <section class="panel">
             <div class="panel-title">
-                <span>⚡ Dispositivo ESP32-DRAIN-0102</span>
-                <span id="conn-badge" style="font-size: 0.75rem; background: #065f46; color: #34d399; padding: 2px 8px; border-radius: 12px;">ONLINE</span>
+                <h2>Dispositivo</h2>
+                <span class="muted">Teste guiado</span>
             </div>
+            <p class="panel-intro">Escolha um cenário ou ajuste os controles. O envio automático acontece a cada 10 segundos.</p>
 
-            <!-- Placa com Display OLED -->
             <div class="esp32-board">
                 <div class="status-leds">
-                    <div class="led-group"><div class="led active-pwr"></div>PWR</div>
-                    <div class="led-group"><div id="led-wifi" class="led active-wifi"></div>WIFI</div>
-                    <div class="led-group"><div id="led-tx" class="led"></div>TX</div>
+                    <div class="led-group"><div class="led active-pwr"></div>Energia</div>
+                    <div class="led-group"><div id="led-wifi" class="led active-wifi"></div>Rede</div>
+                    <div class="led-group"><div id="led-tx" class="led"></div>Envio</div>
                 </div>
-
                 <div class="oled-display">
                     <div class="oled-header">
-                        <span>BIOCOLETA v1.0</span>
-                        <span id="oled-proto">HTTP/REST</span>
+                        <span>BIOCOLETA</span>
+                        <span id="oled-proto">Conexão HTTP</span>
                     </div>
-                    <div class="oled-body" id="oled-text">
+                    <div id="oled-text">
                         Nível: 20.0%<br>
                         Fluxo: 2.50 L/s<br>
                         Estado: NORMAL
@@ -298,10 +420,9 @@
                 </div>
             </div>
 
-            <!-- Controles dos Sensores -->
             <div class="control-group">
                 <div class="control-label">
-                    <span>Nível de Água (Ultrassônico HC-SR04)</span>
+                    <span>Nível da água</span>
                     <span class="val" id="val-level">20.0%</span>
                 </div>
                 <input type="range" id="input-level" min="0" max="100" value="20" step="0.5">
@@ -309,7 +430,7 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    <span>Fluxo de Saída (Sensor YF-S201)</span>
+                    <span>Fluxo de saída</span>
                     <span class="val" id="val-flow">2.50 L/s</span>
                 </div>
                 <input type="range" id="input-flow" min="0" max="10" value="2.5" step="0.05">
@@ -317,85 +438,99 @@
 
             <div class="control-group">
                 <div class="control-label">
-                    <span>Qualidade do Sinal / Confiabilidade</span>
+                    <span>Qualidade do sinal</span>
                     <span class="val" id="val-quality">0.98</span>
                 </div>
                 <input type="range" id="input-quality" min="0" max="1" value="0.98" step="0.01">
             </div>
 
-            <div class="toggle-switch">
-                <span>Alerta de Tampa / Tamper</span>
-                <label class="switch">
-                    <input type="checkbox" id="input-tamper">
-                    <span class="slider-switch"></span>
-                </label>
+            <div class="tamper-control">
+                <div class="choice-label">
+                    <span>Alerta de tampa</span>
+                    <strong id="val-tamper">Desligado</strong>
+                </div>
+                <div class="choice-buttons" role="group" aria-label="Alerta de tampa">
+                    <button type="button" class="choice-button is-active" id="tamper-off" aria-pressed="true">Desligado</button>
+                    <button type="button" class="choice-button" id="tamper-on" aria-pressed="false">Ligado</button>
+                </div>
+                <span class="muted">A escolha será enviada no próximo envio.</span>
             </div>
 
             <div class="control-group">
-                <div class="control-label">
-                    <span>Backend base URL</span>
-                </div>
-                <input type="text" id="input-base-url" value="http://127.0.0.1:8080"
-                       style="width:100%; background:#1e293b; color:white; border:1px solid #475569; padding:8px; border-radius:4px;">
+                <div class="control-label"><span>Endereço do painel</span></div>
+                <input class="field-input" type="text" id="input-base-url" value="http://127.0.0.1:8080">
             </div>
 
             <div class="control-group">
-                <div class="control-label">
-                    <span>X-Device-Key</span>
-                </div>
-                <input type="text" id="input-device-key" value="demo-device-key"
-                       style="width:100%; background:#1e293b; color:white; border:1px solid #475569; padding:8px; border-radius:4px;">
+                <div class="control-label"><span>Chave do dispositivo</span></div>
+                <input class="field-input" type="text" id="input-device-key" value="demo-device-key">
             </div>
 
-            <!-- Cenários Pré-configurados -->
-            <div style="margin-top:15px; border-top:1px solid #334155; padding-top:10px;">
-                <span style="font-size:0.8rem; color:var(--text-dim);">Cenários Rápidos de Teste:</span>
-                <div class="btn-grid">
-                    <button class="btn" onclick="setScenario(20, 2.5, false)">Normal (Seco)</button>
-                    <button class="btn btn-warning" onclick="setScenario(85, 0.01, false)">Obstrução (Alerta)</button>
-                    <button class="btn btn-danger" onclick="setScenario(95, 0.00, true)">Enxurrada/Pico</button>
-                    <button class="btn btn-primary" onclick="transmitTelemetry()">Transmitir Agora</button>
+            <div class="scenarios">
+                <span>Cenários</span>
+                <div class="btn-grid btn-grid--scenarios">
+                    <button class="btn" type="button" onclick="setScenario(20, 2.5)">Normal</button>
+                    <button class="btn btn-warning" type="button" onclick="setScenario(85, 0.01)">Obstrução</button>
+                    <button class="btn btn-danger" type="button" onclick="setScenario(95, 0.00)">Enxurrada</button>
                 </div>
+                <div class="action-bar">
+                    <button class="btn btn-send" type="button" onclick="transmitTelemetry()">Enviar agora</button>
+                    <button class="btn btn-pause" type="button" id="pause-button" onclick="togglePause()">Pausar envios automáticos</button>
+                </div>
+                <p class="automation-status" id="automation-status">
+                    <span class="automation-dot"></span>
+                    <span id="automation-status-text">Envio automático ligado · próximo envio em até 10s</span>
+                </p>
             </div>
-        </div>
+        </section>
 
-        <!-- PAINEL DIREITO: MONITOR SERIAL DE INSPEÇÃO -->
-        <div class="panel">
+        <section class="panel">
             <div class="panel-title">
-                <span>📡 Terminal de Saída e Pacotes JSON</span>
-                <button class="btn" onclick="clearLogs()" style="padding:2px 8px; font-size:0.75rem;">Limpar</button>
+                <h2>Terminal</h2>
+                <button class="btn btn-ghost" type="button" onclick="clearLogs()">Limpar</button>
             </div>
-
             <div class="terminal" id="terminal-log">
                 <div class="log-entry">
-                    <span class="log-time">[SYSTEM]</span> Simulador IoT BioColeta inicializado com sucesso.<br>
-                    Aguardando envio periódico de telemetria (ESP32-DRAIN-0102)...
+                    <span class="log-time">[SYSTEM]</span> Simulador pronto. Envio a cada 10s.
                 </div>
             </div>
-        </div>
+        </section>
     </div>
+</div>
 
-    <script>
-        // Estado do Dispositivo
-        let isConnected = true;
-        let transmissionTimer = null;
-
-        // Elementos DOM
+<script>
         const inputLevel = document.getElementById('input-level');
         const inputFlow = document.getElementById('input-flow');
         const inputQuality = document.getElementById('input-quality');
-        const inputTamper = document.getElementById('input-tamper');
         const inputBaseUrl = document.getElementById('input-base-url');
         const inputDeviceKey = document.getElementById('input-device-key');
 
         const valLevel = document.getElementById('val-level');
         const valFlow = document.getElementById('val-flow');
         const valQuality = document.getElementById('val-quality');
-        
+
         const oledText = document.getElementById('oled-text');
         const oledProto = document.getElementById('oled-proto');
         const terminalLog = document.getElementById('terminal-log');
         const ledTx = document.getElementById('led-tx');
+        const pauseButton = document.getElementById('pause-button');
+        const automationStatus = document.getElementById('automation-status');
+        const tamperOff = document.getElementById('tamper-off');
+        const tamperOn = document.getElementById('tamper-on');
+        const valTamper = document.getElementById('val-tamper');
+        let tamperAlert = false;
+        let isPaused = false;
+        let timerId;
+
+        function setTamper(nextValue) {
+            tamperAlert = Boolean(nextValue);
+            tamperOff.classList.toggle('is-active', !tamperAlert);
+            tamperOn.classList.toggle('is-active', tamperAlert);
+            tamperOff.setAttribute('aria-pressed', String(!tamperAlert));
+            tamperOn.setAttribute('aria-pressed', String(tamperAlert));
+            valTamper.innerText = tamperAlert ? 'Ligado' : 'Desligado';
+            updateDisplays();
+        }
 
         function updateDisplays() {
             const level = parseFloat(inputLevel.value).toFixed(1);
@@ -405,69 +540,92 @@
             valLevel.innerText = `${level}%`;
             valFlow.innerText = `${flow} L/s`;
             valQuality.innerText = quality;
-            oledProto.innerText = 'HTTP/REST';
+            oledProto.innerText = 'Conexão HTTP';
 
-            let statusStr = "NORMAL";
+            let statusStr = 'NORMAL';
             if (level >= 75.0 && flow <= 0.05) {
-                statusStr = "⚠️ ALERTA OBSTRUÇÃO";
+                statusStr = 'ALERTA OBSTRUÇÃO';
             } else if (level >= 75.0) {
-                statusStr = "ATENÇÃO (NÍVEL ALTO)";
+                statusStr = 'ATENÇÃO (NÍVEL ALTO)';
             }
 
-            oledText.innerHTML = `Nível: ${level}%<br>Fluxo: ${flow} L/s<br>Estado: ${statusStr}`;
+            oledText.innerHTML =
+                `Nível: ${level}%<br>` +
+                `Fluxo: ${flow} L/s<br>` +
+                `Tampa: ${tamperAlert ? 'LIGADA' : 'DESLIGADA'}<br>` +
+                `Estado: ${statusStr}`;
         }
 
         inputLevel.addEventListener('input', updateDisplays);
         inputFlow.addEventListener('input', updateDisplays);
         inputQuality.addEventListener('input', updateDisplays);
+        tamperOff.addEventListener('click', () => setTamper(false));
+        tamperOn.addEventListener('click', () => setTamper(true));
 
-        function setScenario(level, flow, tamper) {
+        function setScenario(level, flow) {
             inputLevel.value = level;
             inputFlow.value = flow;
-            inputTamper.checked = tamper;
+            setTamper(false);
             updateDisplays();
             transmitTelemetry();
         }
 
         function appendLog(html) {
-            terminalLog.innerHTML = html + terminalLog.innerHTML;
+            const wrap = document.createElement('div');
+            wrap.innerHTML = html;
+            const entry = wrap.firstElementChild;
+            terminalLog.prepend(entry);
+            return entry;
         }
 
-        async function transmitTelemetry() {
+        function buildPayload() {
             const level = parseFloat(inputLevel.value);
             const flow = parseFloat(inputFlow.value);
             const quality = parseFloat(inputQuality.value);
-            const tamper = inputTamper.checked;
-            const timestamp = new Date().toISOString();
+
+            return {
+                city_id: 'MATAO-SP',
+                sector: 'sanitation',
+                entity_type: 'drain',
+                entity_id: 'BUEIRO-0102',
+                device_id: 'ESP32-DRAIN-0102',
+                timestamp: new Date().toISOString(),
+                readings: [
+                    { sensor_id: 'WATER-LEVEL-01', measurement: 'water_level', value: level, unit: 'percent' },
+                    { sensor_id: 'WATER-FLOW-01', measurement: 'water_flow', value: flow, unit: 'L/s' }
+                ],
+                quality: quality,
+                tamper_alert: tamperAlert
+            };
+        }
+
+        let sending = false;
+
+        async function transmitTelemetry() {
+            if (sending) {
+                return;
+            }
+            sending = true;
+
+            const payload = buildPayload();
             const baseUrl = inputBaseUrl.value.replace(/\/$/, '');
             const deviceKey = inputDeviceKey.value;
+            const isAnomaly = payload.readings[0].value >= 75.0 && payload.readings[1].value <= 0.05;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
 
             ledTx.classList.add('active-tx');
             setTimeout(() => ledTx.classList.remove('active-tx'), 300);
 
-            const payload = {
-                city_id: "MATAO-SP",
-                sector: "sanitation",
-                entity_type: "drain",
-                entity_id: "BUEIRO-0102",
-                device_id: "ESP32-DRAIN-0102",
-                timestamp: timestamp,
-                readings: [
-                    { sensor_id: "WATER-LEVEL-01", measurement: "water_level", value: level, unit: "percent" },
-                    { sensor_id: "WATER-FLOW-01", measurement: "water_flow", value: flow, unit: "L/s" }
-                ],
-                quality: quality,
-                tamper_alert: tamper
-            };
-
-            const isAnomaly = (level >= 75.0 && flow <= 0.05);
-            let logHtml = `<div class="log-entry">
+            const entry = appendLog(`<div class="log-entry">
                 <span class="log-time">[${new Date().toLocaleTimeString()}]</span>
-                <span class="log-http">HTTP POST ${baseUrl}/api/telemetry</span><br>`;
-
-            if (isAnomaly) {
-                logHtml += `<span class="log-alert">GATILHO DETERMINÍSTICO: nível &gt;= 75% e fluxo &lt;= 0.05 L/s (2 leituras no backend)</span><br>`;
-            }
+                <span class="log-http"> HTTP POST ${baseUrl}/api/telemetry</span><br>
+                <span class="log-http">Alerta de tampa: ${payload.tamper_alert ? 'ligado' : 'desligado'}</span><br>
+                ${isAnomaly ? '<span class="log-alert">GATILHO OBSTRUÇÃO: nível &gt;= 75% e fluxo &lt;= 0.05 L/s</span><br>' : ''}
+                <span class="log-http log-response">enviando…</span>
+                <div class="log-json">${JSON.stringify(payload, null, 2)}</div>
+            </div>`);
+            const responseLine = entry.querySelector('.log-response');
 
             try {
                 const response = await fetch(`${baseUrl}/api/telemetry`, {
@@ -476,24 +634,69 @@
                         'Content-Type': 'application/json',
                         'X-Device-Key': deviceKey
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
                 });
                 const bodyText = await response.text();
-                logHtml += `<span class="log-http">← ${response.status} ${bodyText}</span><br>`;
+                responseLine.textContent = `← ${response.status} ${bodyText}`;
+                updateAutomationStatus(
+                    isPaused
+                        ? `Último envio ${new Date().toLocaleTimeString()} · envios automáticos pausados`
+                        : `Último envio ${new Date().toLocaleTimeString()} · próximo envio em até 10s`
+                );
             } catch (err) {
-                logHtml += `<span class="log-alert">Falha de rede: ${err.message}</span><br>`;
+                responseLine.classList.add('log-alert');
+                responseLine.textContent = err.name === 'AbortError'
+                    ? 'Tempo limite de 8s excedido; o próximo envio continuará automaticamente'
+                    : `Falha de rede: ${err.message}`;
+                updateAutomationStatus(
+                    isPaused
+                        ? 'Falha no envio manual · envios automáticos pausados'
+                        : 'Falha no envio · tentando novamente em até 10s'
+                );
+            } finally {
+                clearTimeout(timeoutId);
+                sending = false;
             }
-
-            logHtml += `<div class="log-json">${JSON.stringify(payload, null, 2)}</div></div>`;
-            appendLog(logHtml);
         }
 
         function clearLogs() {
             terminalLog.innerHTML = `<div class="log-entry"><span class="log-time">[SYSTEM]</span> Console limpo.</div>`;
         }
 
-        setInterval(transmitTelemetry, 10000);
+        function updateAutomationStatus(message, paused = isPaused) {
+            automationStatus.classList.toggle('is-paused', paused);
+            document.getElementById('automation-status-text').innerText = message;
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            pauseButton.innerText = isPaused ? 'Continuar envios automáticos' : 'Pausar envios automáticos';
+            pauseButton.classList.toggle('is-paused', isPaused);
+            updateAutomationStatus(isPaused
+                ? 'Envio automático pausado · Enviar agora continua disponível'
+                : 'Envio automático ligado · próximo envio em até 10s');
+            if (isPaused) {
+                clearTimeout(timerId);
+                return;
+            }
+            scheduleNextSend();
+        }
+
+        function scheduleNextSend() {
+            clearTimeout(timerId);
+            if (isPaused) {
+                return;
+            }
+            timerId = setTimeout(async () => {
+                await transmitTelemetry();
+                scheduleNextSend();
+            }, 10000);
+        }
+
         updateDisplays();
-    </script>
+        transmitTelemetry();
+        scheduleNextSend();
+</script>
 </body>
 </html>
