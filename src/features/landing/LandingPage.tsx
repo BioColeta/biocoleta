@@ -9,7 +9,7 @@ import {
   Sparkles,
   UserCheck,
 } from 'lucide-react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import type { ReactNode } from 'react'
 import { Brand } from '@/app/Brand'
 import { ThemeToggle } from '@/app/ThemeToggle'
@@ -84,10 +84,11 @@ const goals = [
 const team = ['Hadrian', 'César', 'Jerônimo', 'Miguel', 'Rafael', 'Victor']
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
+  const still = useReducedMotion()
   return (
     <motion.section
       className="mx-auto w-full max-w-6xl px-4 py-14"
-      initial={{ opacity: 0, y: 24 }}
+      initial={still ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
     >
@@ -113,6 +114,7 @@ function Calls() {
 }
 
 export function LandingPage() {
+  const still = useReducedMotion()
   return (
     <div className="overflow-x-clip">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4">
@@ -126,7 +128,10 @@ export function LandingPage() {
       </header>
       <main>
         <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 md:grid-cols-[1.2fr_1fr] md:py-20">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div
+            initial={still ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <p className="text-primary mb-3 text-sm font-medium">
               Drenagem urbana · monitoramento preventivo
             </p>
@@ -140,7 +145,7 @@ export function LandingPage() {
             <Calls />
           </motion.div>
           <div className="relative mx-auto grid aspect-square w-56 place-items-center md:w-80">
-            {[0, 1, 2].map((ring) => (
+            {(still ? [] : [0, 1, 2]).map((ring) => (
               <motion.span
                 key={ring}
                 className="border-primary absolute inset-0 rounded-full border"
