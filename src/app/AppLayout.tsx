@@ -7,6 +7,7 @@ import { navigation } from '@/app/navigation'
 import { ThemeToggle } from '@/app/ThemeToggle'
 import { UserMenu } from '@/app/UserMenu'
 import { Button } from '@/components/ui/button'
+import { DrainCommands } from '@/features/map/DrainCommands'
 import { Dialog } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 
@@ -96,7 +97,9 @@ export function AppLayout() {
       <Dialog open={menuOpen} onOpenChange={setMenuOpen} title="Menu" side="left">
         <Navigation onNavigate={() => setMenuOpen(false)} />
       </Dialog>
-      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen}>
+        {paletteOpen && <DrainCommands onDone={() => setPaletteOpen(false)} />}
+      </CommandPalette>
     </div>
   )
 }
