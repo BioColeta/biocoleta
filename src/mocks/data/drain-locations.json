@@ -1,0 +1,402 @@
+[
+ {
+  "id": "BUEIRO-0102",
+  "deviceId": "ESP32-DRAIN-0102",
+  "district": "Consolação",
+  "address": "Rua da Consolação, 1624",
+  "lat": -23.561414,
+  "lng": -46.655881
+ },
+ {
+  "id": "BUEIRO-0318",
+  "deviceId": "ESP32-DRAIN-0318",
+  "district": "Cerqueira César",
+  "address": "Rua Haddock Lobo, 1059",
+  "lat": -23.55803,
+  "lng": -46.6612
+ },
+ {
+  "id": "BUEIRO-0450",
+  "deviceId": "ESP32-DRAIN-0450",
+  "district": "Bela Vista",
+  "address": "Alameda Ribeirão Preto, 819",
+  "lat": -23.5649,
+  "lng": -46.6501
+ },
+ {
+  "id": "BUEIRO-0771",
+  "deviceId": "ESP32-DRAIN-0771",
+  "district": "Jardim Paulista",
+  "address": "Alameda Lorena, 1085",
+  "lat": -23.56672,
+  "lng": -46.65904
+ },
+ {
+  "id": "BUEIRO-0893",
+  "deviceId": "ESP32-DRAIN-0893",
+  "district": "Bela Vista",
+  "address": "Rua Treze de Maio, 790",
+  "lat": -23.55922,
+  "lng": -46.6517
+ },
+ {
+  "id": "BUEIRO-1044",
+  "deviceId": "ESP32-DRAIN-1044",
+  "district": "Jardim Paulista",
+  "address": "Alameda Jaú, 237",
+  "lat": -23.56305,
+  "lng": -46.6589
+ },
+ {
+  "id": "BUEIRO-1207",
+  "deviceId": "ESP32-DRAIN-1207",
+  "district": "Consolação",
+  "address": "Rua Antônio Carlos, 1838",
+  "lat": -23.5571,
+  "lng": -46.6543
+ },
+ {
+  "id": "BUEIRO-1366",
+  "deviceId": "ESP32-DRAIN-1366",
+  "district": "Jardim Paulista",
+  "address": "Alameda Jaú, 125",
+  "lat": -23.56548,
+  "lng": -46.6534
+ },
+ {
+  "id": "BUEIRO-1421",
+  "deviceId": "ESP32-DRAIN-1421",
+  "district": "Jardim Paulista",
+  "address": "Rua Pamplona, 1343",
+  "lat": -23.566761,
+  "lng": -46.652506
+ },
+ {
+  "id": "BUEIRO-1437",
+  "deviceId": "ESP32-DRAIN-1437",
+  "district": "Paraíso",
+  "address": "Rua Teixeira da Silva, 1596",
+  "lat": -23.572788,
+  "lng": -46.650765
+ },
+ {
+  "id": "BUEIRO-1457",
+  "deviceId": "ESP32-DRAIN-1457",
+  "district": "Jardim Paulista",
+  "address": "Alameda Jaú, 72",
+  "lat": -23.571518,
+  "lng": -46.65567
+ },
+ {
+  "id": "BUEIRO-1582",
+  "deviceId": "ESP32-DRAIN-1582",
+  "district": "Bela Vista",
+  "address": "Alameda Ribeirão Preto, 691",
+  "lat": -23.557335,
+  "lng": -46.643547
+ },
+ {
+  "id": "BUEIRO-1600",
+  "deviceId": "ESP32-DRAIN-1600",
+  "district": "Consolação",
+  "address": "Rua Peixoto Gomide, 941",
+  "lat": -23.552801,
+  "lng": -46.653943
+ },
+ {
+  "id": "BUEIRO-1745",
+  "deviceId": "ESP32-DRAIN-1745",
+  "district": "Jardim Paulista",
+  "address": "Rua Pamplona, 1891",
+  "lat": -23.564518,
+  "lng": -46.662657
+ },
+ {
+  "id": "BUEIRO-1767",
+  "deviceId": "ESP32-DRAIN-1767",
+  "district": "Cerqueira César",
+  "address": "Rua Augusta, 1039",
+  "lat": -23.561515,
+  "lng": -46.659489
+ },
+ {
+  "id": "BUEIRO-1771",
+  "deviceId": "ESP32-DRAIN-1771",
+  "district": "Bela Vista",
+  "address": "Alameda Ribeirão Preto, 1190",
+  "lat": -23.564926,
+  "lng": -46.652443
+ },
+ {
+  "id": "BUEIRO-1801",
+  "deviceId": "ESP32-DRAIN-1801",
+  "district": "Bela Vista",
+  "address": "Rua Treze de Maio, 335",
+  "lat": -23.563832,
+  "lng": -46.646946
+ },
+ {
+  "id": "BUEIRO-1887",
+  "deviceId": "ESP32-DRAIN-1887",
+  "district": "Paraíso",
+  "address": "Rua Cubatão, 908",
+  "lat": -23.566631,
+  "lng": -46.643668
+ },
+ {
+  "id": "BUEIRO-2313",
+  "deviceId": "ESP32-DRAIN-2313",
+  "district": "Cerqueira César",
+  "address": "Rua Haddock Lobo, 959",
+  "lat": -23.563331,
+  "lng": -46.663351
+ },
+ {
+  "id": "BUEIRO-2314",
+  "deviceId": "ESP32-DRAIN-2314",
+  "district": "Consolação",
+  "address": "Rua da Consolação, 1409",
+  "lat": -23.554262,
+  "lng": -46.651584
+ },
+ {
+  "id": "BUEIRO-2660",
+  "deviceId": "ESP32-DRAIN-2660",
+  "district": "Bela Vista",
+  "address": "Rua Itapeva, 1140",
+  "lat": -23.561715,
+  "lng": -46.650975
+ },
+ {
+  "id": "BUEIRO-2860",
+  "deviceId": "ESP32-DRAIN-2860",
+  "district": "Bela Vista",
+  "address": "Alameda Ribeirão Preto, 89",
+  "lat": -23.55619,
+  "lng": -46.642508
+ },
+ {
+  "id": "BUEIRO-3027",
+  "deviceId": "ESP32-DRAIN-3027",
+  "district": "Paraíso",
+  "address": "Rua Cubatão, 1345",
+  "lat": -23.568092,
+  "lng": -46.642982
+ },
+ {
+  "id": "BUEIRO-3173",
+  "deviceId": "ESP32-DRAIN-3173",
+  "district": "Paraíso",
+  "address": "Rua Cubatão, 112",
+  "lat": -23.569146,
+  "lng": -46.646536
+ },
+ {
+  "id": "BUEIRO-3195",
+  "deviceId": "ESP32-DRAIN-3195",
+  "district": "Bela Vista",
+  "address": "Rua Itapeva, 945",
+  "lat": -23.558679,
+  "lng": -46.647658
+ },
+ {
+  "id": "BUEIRO-3273",
+  "deviceId": "ESP32-DRAIN-3273",
+  "district": "Paraíso",
+  "address": "Rua Cubatão, 1010",
+  "lat": -23.570471,
+  "lng": -46.651025
+ },
+ {
+  "id": "BUEIRO-3325",
+  "deviceId": "ESP32-DRAIN-3325",
+  "district": "Paraíso",
+  "address": "Rua do Paraíso, 284",
+  "lat": -23.570438,
+  "lng": -46.645277
+ },
+ {
+  "id": "BUEIRO-3362",
+  "deviceId": "ESP32-DRAIN-3362",
+  "district": "Bela Vista",
+  "address": "Rua Treze de Maio, 1628",
+  "lat": -23.562472,
+  "lng": -46.647176
+ },
+ {
+  "id": "BUEIRO-3405",
+  "deviceId": "ESP32-DRAIN-3405",
+  "district": "Jardim Paulista",
+  "address": "Alameda Lorena, 348",
+  "lat": -23.565761,
+  "lng": -46.661704
+ },
+ {
+  "id": "BUEIRO-3441",
+  "deviceId": "ESP32-DRAIN-3441",
+  "district": "Consolação",
+  "address": "Rua da Consolação, 818",
+  "lat": -23.554855,
+  "lng": -46.656289
+ },
+ {
+  "id": "BUEIRO-3503",
+  "deviceId": "ESP32-DRAIN-3503",
+  "district": "Bela Vista",
+  "address": "Rua dos Ingleses, 891",
+  "lat": -23.559789,
+  "lng": -46.649145
+ },
+ {
+  "id": "BUEIRO-3510",
+  "deviceId": "ESP32-DRAIN-3510",
+  "district": "Paraíso",
+  "address": "Rua Abílio Soares, 1797",
+  "lat": -23.567935,
+  "lng": -46.644373
+ },
+ {
+  "id": "BUEIRO-3634",
+  "deviceId": "ESP32-DRAIN-3634",
+  "district": "Jardim Paulista",
+  "address": "Alameda Jaú, 804",
+  "lat": -23.568103,
+  "lng": -46.65685
+ },
+ {
+  "id": "BUEIRO-3638",
+  "deviceId": "ESP32-DRAIN-3638",
+  "district": "Cerqueira César",
+  "address": "Rua Haddock Lobo, 403",
+  "lat": -23.553458,
+  "lng": -46.664506
+ },
+ {
+  "id": "BUEIRO-3757",
+  "deviceId": "ESP32-DRAIN-3757",
+  "district": "Jardim Paulista",
+  "address": "Rua Pamplona, 377",
+  "lat": -23.568673,
+  "lng": -46.663404
+ },
+ {
+  "id": "BUEIRO-3846",
+  "deviceId": "ESP32-DRAIN-3846",
+  "district": "Consolação",
+  "address": "Rua Peixoto Gomide, 970",
+  "lat": -23.552846,
+  "lng": -46.647215
+ },
+ {
+  "id": "BUEIRO-3849",
+  "deviceId": "ESP32-DRAIN-3849",
+  "district": "Consolação",
+  "address": "Rua Antônio Carlos, 1617",
+  "lat": -23.554666,
+  "lng": -46.654387
+ },
+ {
+  "id": "BUEIRO-3915",
+  "deviceId": "ESP32-DRAIN-3915",
+  "district": "Jardim Paulista",
+  "address": "Alameda Itu, 609",
+  "lat": -23.571764,
+  "lng": -46.659606
+ },
+ {
+  "id": "BUEIRO-4050",
+  "deviceId": "ESP32-DRAIN-4050",
+  "district": "Cerqueira César",
+  "address": "Rua Bela Cintra, 382",
+  "lat": -23.55501,
+  "lng": -46.664037
+ },
+ {
+  "id": "BUEIRO-4119",
+  "deviceId": "ESP32-DRAIN-4119",
+  "district": "Bela Vista",
+  "address": "Rua dos Ingleses, 1083",
+  "lat": -23.553994,
+  "lng": -46.646546
+ },
+ {
+  "id": "BUEIRO-4138",
+  "deviceId": "ESP32-DRAIN-4138",
+  "district": "Consolação",
+  "address": "Rua Antônio Carlos, 930",
+  "lat": -23.55721,
+  "lng": -46.657926
+ },
+ {
+  "id": "BUEIRO-4225",
+  "deviceId": "ESP32-DRAIN-4225",
+  "district": "Cerqueira César",
+  "address": "Rua Augusta, 1099",
+  "lat": -23.55801,
+  "lng": -46.663263
+ },
+ {
+  "id": "BUEIRO-4237",
+  "deviceId": "ESP32-DRAIN-4237",
+  "district": "Bela Vista",
+  "address": "Rua dos Ingleses, 1691",
+  "lat": -23.56306,
+  "lng": -46.65423
+ },
+ {
+  "id": "BUEIRO-4260",
+  "deviceId": "ESP32-DRAIN-4260",
+  "district": "Bela Vista",
+  "address": "Rua Itapeva, 1756",
+  "lat": -23.563204,
+  "lng": -46.645273
+ },
+ {
+  "id": "BUEIRO-4311",
+  "deviceId": "ESP32-DRAIN-4311",
+  "district": "Jardim Paulista",
+  "address": "Alameda Lorena, 493",
+  "lat": -23.56557,
+  "lng": -46.655434
+ },
+ {
+  "id": "BUEIRO-4334",
+  "deviceId": "ESP32-DRAIN-4334",
+  "district": "Cerqueira César",
+  "address": "Rua Augusta, 210",
+  "lat": -23.561085,
+  "lng": -46.665906
+ },
+ {
+  "id": "BUEIRO-4566",
+  "deviceId": "ESP32-DRAIN-4566",
+  "district": "Cerqueira César",
+  "address": "Rua Bela Cintra, 1342",
+  "lat": -23.56089,
+  "lng": -46.660742
+ },
+ {
+  "id": "BUEIRO-4687",
+  "deviceId": "ESP32-DRAIN-4687",
+  "district": "Consolação",
+  "address": "Rua Peixoto Gomide, 855",
+  "lat": -23.557372,
+  "lng": -46.652096
+ },
+ {
+  "id": "BUEIRO-4784",
+  "deviceId": "ESP32-DRAIN-4784",
+  "district": "Jardim Paulista",
+  "address": "Alameda Lorena, 75",
+  "lat": -23.562811,
+  "lng": -46.656078
+ },
+ {
+  "id": "BUEIRO-4858",
+  "deviceId": "ESP32-DRAIN-4858",
+  "district": "Bela Vista",
+  "address": "Rua dos Ingleses, 1753",
+  "lat": -23.564471,
+  "lng": -46.64427
+ }
+]
