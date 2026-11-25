@@ -1,3 +1,4 @@
+import { OFFLINE_AFTER_TICKS } from '@/domain/constants'
 import { dashboardSummary } from '@/domain/metrics'
 import { drainStatus, isOpenAlert } from '@/domain/rules'
 import type {
@@ -38,7 +39,13 @@ function deviceView(db: Db, deviceId: string): DeviceView {
   const device = db.devices.find((item) => item.id === deviceId)
   if (!device) throw notFound('Dispositivo')
   const view = getDrain(db, device.drainId)
-  return { ...device, status: view.status, district: view.district, lastReading: view.lastReading }
+  return {
+    ...device,
+    status: view.status,
+    offline: db.tick - device.lastSeenTick >= OFFLINE_AFTER_TICKS,
+    district: view.district,
+    lastReading: view.lastReading,
+  }
 }
 
 export const listDevices = (db: Db) => db.devices.map((device) => deviceView(db, device.id))

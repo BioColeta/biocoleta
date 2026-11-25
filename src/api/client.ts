@@ -31,7 +31,8 @@ export async function request<T>(path: string, options: Options = {}): Promise<T
   const payload: unknown = await response.json().catch(() => null)
   if (!response.ok) {
     const error = (payload as { error?: { code: string; message: string } } | null)?.error
-    if (response.status === 401 && token) useSession.getState().end()
+    // A rejected device key is also a 401, but it says nothing about the operator session.
+    if (error?.code === 'unauthorized' && token) useSession.getState().end()
     throw new ApiError(
       response.status,
       error?.code ?? 'unexpected',

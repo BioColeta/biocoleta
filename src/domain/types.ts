@@ -174,6 +174,7 @@ export type DrainView = Drain & {
 }
 export type DeviceView = Device & {
   status: DrainStatus
+  offline: boolean
   district: string
   lastReading: Reading | null
 }
