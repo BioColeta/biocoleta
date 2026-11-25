@@ -121,6 +121,14 @@ describe('decisions', () => {
 describe('analysis', () => {
   const setMode = (aiMode: string) => call('/demo/simulation', 'PUT', { aiMode })
 
+  it('recognises an obstruction as soon as the alert is created', async () => {
+    await send(normal)
+    await send(normal)
+    const alertId = await raiseAlert()
+    const analysis = await call<Analysis>(`/alerts/${alertId}/analysis`, 'POST')
+    expect(analysis.data).toMatchObject({ classification: 'obstruction', probability: 1 })
+  })
+
   it('records the active prompt version and never changes the alert', async () => {
     const alertId = await raiseAlert()
     const first = await call<Analysis>(`/alerts/${alertId}/analysis`, 'POST')

@@ -56,10 +56,13 @@ export function analyze(db: Db, alertId: string, now: Date) {
   }
   const prompt = db.prompts.find((item) => item.active)!
   const until = isOpenAlert(alert.status) ? now.toISOString() : alert.createdAt
+  // Only readings since the evidence: older healthy ones would dilute a fresh obstruction.
+  const since = alert.evidence.readings[0].recordedAt
   const recent = (db.telemetry[alert.deviceId] ?? [])
-    .filter((reading) => reading.recordedAt <= until)
+    .filter((reading) => reading.recordedAt >= since && reading.recordedAt <= until)
     .slice(-ANALYSIS_WINDOW)
-  const readings = recent.length ? recent : alert.evidence.readings
+  const readings =
+    recent.length >= alert.evidence.readings.length ? recent : alert.evidence.readings
   const output = {
     ...analyzeReadings(readings, prompt.version),
     ...(aiMode === 'invalid' ? { probability: 7 } : {}),

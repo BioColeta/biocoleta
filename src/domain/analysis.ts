@@ -13,7 +13,7 @@ const weights: Record<string, { anomalous: number; stagnant: number; high: numbe
 }
 
 const MIN_QUALITY = 0.5
-const MIN_READINGS = 3
+const MIN_READINGS = 2
 
 const percent = (value: number) => `${Math.round(value * 100)}%`
 const ratio = (readings: Reading[], match: (reading: Reading) => boolean) =>

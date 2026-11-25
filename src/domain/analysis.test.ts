@@ -18,7 +18,7 @@ describe('analyzeReadings', () => {
     ['obstruction', window(85, 0.01)],
     ['normal', window(20, 2.5)],
     ['sensor_fault', window(85, 0.01, 0.2)],
-    ['inconclusive', window(85, 0.01).slice(0, 2)],
+    ['inconclusive', window(85, 0.01).slice(0, 1)],
   ])('classifies a %s window', (expected, readings) => {
     expect(analyzeReadings(readings, 'v2').classification).toBe(expected)
   })
