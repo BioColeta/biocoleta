@@ -2,22 +2,12 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
-import { request } from '@/api/client'
-import { useSession } from '@/api/session'
-import { DEMO_CREDENTIALS } from '@/domain/constants'
 import { renderApp, server } from '@/test/render'
+import { signIn } from '@/test/session'
 
 beforeAll(() => server.listen({ onUnhandledFrame: 'error' }))
 afterAll(() => server.close())
 afterEach(() => server.resetHandlers())
-
-async function signIn() {
-  const { token, user } = await request<{
-    token: string
-    user: { username: string; name: string }
-  }>('/auth/login', { method: 'POST', body: DEMO_CREDENTIALS })
-  useSession.getState().start(token, user)
-}
 
 describe('dashboard', () => {
   it('opens the filtered screen behind an indicator', async () => {

@@ -7,13 +7,14 @@ import { navigation } from '@/app/navigation'
 import { ThemeToggle } from '@/app/ThemeToggle'
 import { UserMenu } from '@/app/UserMenu'
 import { Button } from '@/components/ui/button'
+import { useAlertNotifications } from '@/features/alerts/useAlertNotifications'
 import { DrainCommands } from '@/features/map/DrainCommands'
 import { Dialog } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 
-type NavProps = { collapsed?: boolean; onNavigate?: () => void }
+type NavProps = { newAlerts: number; collapsed?: boolean; onNavigate?: () => void }
 
-function Navigation({ collapsed, onNavigate }: NavProps) {
+function Navigation({ newAlerts, collapsed, onNavigate }: NavProps) {
   return (
     <nav aria-label="Principal" className="grid gap-1">
       {navigation.map(({ to, label, icon: Icon }) => (
@@ -22,12 +23,20 @@ function Navigation({ collapsed, onNavigate }: NavProps) {
           to={to}
           onClick={onNavigate}
           title={collapsed ? label : undefined}
-          aria-label={label}
+          aria-label={
+            to === '/app/alerts' && newAlerts ? `${label}, ${newAlerts} aguardando decisão` : label
+          }
           className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
           activeProps={{ className: 'bg-muted !text-foreground font-medium' }}
         >
           <Icon className="size-4 shrink-0" aria-hidden />
           {!collapsed && <span className="truncate">{label}</span>}
+          {to === '/app/alerts' && newAlerts > 0 && (
+            <span className="bg-danger text-background ml-auto rounded-full px-1.5 text-xs font-semibold tabular-nums">
+              {newAlerts}
+              <span className="sr-only"> aguardando decisão</span>
+            </span>
+          )}
         </Link>
       ))}
     </nav>
@@ -38,6 +47,7 @@ export function AppLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
+  const newAlerts = useAlertNotifications()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const section = navigation.find((item) => pathname.startsWith(item.to))?.label
 
@@ -50,7 +60,7 @@ export function AppLayout() {
         )}
       >
         <Brand compact={collapsed} />
-        <Navigation collapsed={collapsed} />
+        <Navigation newAlerts={newAlerts} collapsed={collapsed} />
         <Button
           variant="ghost"
           size="icon"
@@ -95,7 +105,7 @@ export function AppLayout() {
       </div>
 
       <Dialog open={menuOpen} onOpenChange={setMenuOpen} title="Menu" side="left">
-        <Navigation onNavigate={() => setMenuOpen(false)} />
+        <Navigation newAlerts={newAlerts} onNavigate={() => setMenuOpen(false)} />
       </Dialog>
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen}>
         {paletteOpen && <DrainCommands onDone={() => setPaletteOpen(false)} />}
