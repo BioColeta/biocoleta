@@ -6,3 +6,9 @@ backend/vendor/
 .env
 backend/composer.lock
 backend/.phpunit.cache/
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.DS_Store

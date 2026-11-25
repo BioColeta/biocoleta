@@ -1,0 +1,13 @@
+dist
+public
+package-lock.json
+playwright-report
+test-results
+backend
+frontend
+database
+simulador
+docs
+.specs
+.claude
+src/mocks/data/*.json

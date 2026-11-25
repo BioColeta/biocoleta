@@ -16,7 +16,7 @@
 - **Trade-off**: No separate JS frontend toolchain in MVP.
 - **Scope**: backend, frontend views/assets
 - **Date**: 2026-10-23
-- **Status**: active
+- **Status**: superseded by AD-006
 
 ### AD-003
 - **Decision**: Anomaly classification in MVP is deterministic rule-based; no AI/LLM module, prompts, or AI scaffolding.
@@ -24,7 +24,7 @@
 - **Trade-off**: No probabilistic scoring or prompt versioning until a future feature.
 - **Scope**: entire MVP feature `mvp-drain-monitoring`
 - **Date**: 2026-10-23
-- **Status**: active
+- **Status**: superseded by AD-006
 
 ### AD-004
 - **Decision**: Persistence is MariaDB (relational) for telemetry, alerts, decisions, and operator users.
@@ -32,7 +32,7 @@
 - **Trade-off**: No document/time-series DB in MVP.
 - **Scope**: database migrations, backend repositories
 - **Date**: 2026-10-23
-- **Status**: active
+- **Status**: superseded by AD-006
 
 ### AD-005
 - **Decision**: Repository layout is `backend/`, `frontend/`, `database/`, `simulador/` at repo root; `frontend/` holds SSR views/assets consumed by `backend/`.
@@ -40,6 +40,14 @@
 - **Trade-off**: Views live outside `backend/` source tree (wiring via config path).
 - **Scope**: all packages
 - **Date**: 2026-10-23
+- **Status**: superseded by AD-006
+
+### AD-006
+- **Decision**: v2 is a single React + TypeScript SPA with a mocked HTTP API (MSW) persisted in the browser. Supersedes AD-002, AD-003, AD-004 and AD-005.
+- **Reason**: v1 was fragmented across several runtimes and had little product surface.
+- **Trade-off**: Departs from the PHP 8 + MariaDB requirement in the vision document (professor confirmation pending); data syncs only between tabs of the same browser.
+- **Scope**: whole repository (GitHub milestone `v2-react`)
+- **Date**: 2026-11-25
 - **Status**: active
 
 ## Handoff
