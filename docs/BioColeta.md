@@ -50,3 +50,11 @@ O produto será considerado bem-sucedido se, em sua demonstração final, for ca
 > 2. O sistema processar com êxito a inserção de uma anomalia simulada (ex: pico de nível com fluxo zerado).  
 > 3. A IA processar adequadamente o histórico, identificando corretamente a anomalia e gerando uma saída estruturada validada.  
 > 4. A plataforma exibir o alerta de forma clara ao Operador, permitindo o registro da tomada de decisão.
+## **8\. Versão 2 (aplicação web com dados simulados)**
+
+A versão 2 reúne o produto em um único aplicativo React + TypeScript, com a API simulada no navegador.
+
+> * **Escopo:** painel com indicadores, mapa em tempo real, central de alertas, análise assistida simulada com versões de prompt, ordens de serviço, dispositivos, simulador, histórico e planejamento de chuva sobre o relevo.  
+> * **Regras mantidas:** a detecção de obstrução é determinística e toda decisão e ordem de serviço depende do Operador.  
+> * **Requisitos não funcionais:** a versão 2 não usa PHP 8, MariaDB nem MQTT. Essa mudança em relação à seção 5 **aguarda confirmação do professor** (decisão AD-006 em `.specs/STATE.md`).  
+> * **Limites:** sensores, autenticação e IA são simulados; o planejamento de chuva é uma estimativa didática e não prevê alagamentos reais.

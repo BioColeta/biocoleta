@@ -52,11 +52,8 @@
 
 ## Handoff
 
-- **Feature**: mvp-drain-monitoring (`.specs/features/mvp-drain-monitoring/`)
-- **Phase / Task**: Execute complete through Phase 6 (T6.1); UI decision form shipped with ALT view
-- **Completed**: T0–T6 implementation commits; PHPUnit green
-- **In-progress**: none
-- **Next step**: issues assigned/closed after push
-- **Blockers**: composer.lock not versioned (learning project choice)
-- **Uncommitted files**: none
-- **Branch**: main (ready to push)
+- **Feature**: v2-web-app (`.specs/features/v2-web-app/`)
+- **Phase / Task**: implementation of issues #13 to #31 complete on `main`
+- **Next step**: professor confirmation, then remove the v1 folders; enable GitHub Pages
+- **Blockers**: professor confirmation
+- **Branch**: main
