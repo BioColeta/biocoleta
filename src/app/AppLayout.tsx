@@ -23,9 +23,8 @@ function Navigation({ newAlerts, collapsed, onNavigate }: NavProps) {
           to={to}
           onClick={onNavigate}
           title={collapsed ? label : undefined}
-          aria-label={
-            to === '/app/alerts' && newAlerts ? `${label}, ${newAlerts} aguardando decisão` : label
-          }
+          // The visible text names the link; an explicit label is only needed when it is hidden.
+          aria-label={collapsed ? label : undefined}
           className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
           activeProps={{ className: 'bg-muted !text-foreground font-medium' }}
         >
