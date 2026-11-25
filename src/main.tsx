@@ -8,6 +8,7 @@ import { createQueryClient } from '@/api/queryClient'
 import { useTheme } from '@/app/theme'
 import { startMockApi } from '@/mocks/browser'
 import { subscribe } from '@/mocks/db'
+import { startEngine } from '@/mocks/engine/engine'
 import { createAppRouter } from '@/routes/router'
 import './index.css'
 
@@ -41,6 +42,7 @@ async function start() {
     return
   }
   subscribe(() => void queryClient.invalidateQueries())
+  startEngine()
   root.render(
     <StrictMode>
       <App />
