@@ -6,6 +6,7 @@ import {
   Outlet,
   redirect,
 } from '@tanstack/react-router'
+import { useSession } from '@/api/session'
 import { AppLayout } from '@/app/AppLayout'
 import { NotFound } from '@/app/NotFound'
 import { LoadingState } from '@/components/states'
@@ -33,7 +34,16 @@ const simulator = createRoute({
   ),
 })
 
-const app = createRoute({ getParentRoute: () => root, path: '/app', component: AppLayout })
+const app = createRoute({
+  getParentRoute: () => root,
+  path: '/app',
+  component: AppLayout,
+  beforeLoad: ({ location }) => {
+    if (!useSession.getState().token) {
+      throw redirect({ to: '/login', search: { redirect: location.href } })
+    }
+  },
+})
 const appIndex = createRoute({
   getParentRoute: () => app,
   path: '/',

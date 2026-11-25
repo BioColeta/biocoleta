@@ -5,6 +5,7 @@ import { Brand } from '@/app/Brand'
 import { CommandPalette } from '@/app/CommandPalette'
 import { navigation } from '@/app/navigation'
 import { ThemeToggle } from '@/app/ThemeToggle'
+import { UserMenu } from '@/app/UserMenu'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
@@ -85,6 +86,7 @@ export function AppLayout() {
             <kbd className="text-muted-foreground text-xs max-sm:hidden">⌘K</kbd>
           </Button>
           <ThemeToggle />
+          <UserMenu />
         </header>
         <main className="min-w-0 flex-1 p-4 lg:p-6">
           <Outlet />
