@@ -1,352 +1,352 @@
 {
  "BUEIRO-0102": {
-  "elevationM": 782.7,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1735,
-  "runoffCoefficient": 0.74,
-  "capacityLps": 26
+  "elevationM": 835.45,
+  "downstreamDrainId": "BUEIRO-4237",
+  "catchmentAreaM2": 2549,
+  "runoffCoefficient": 0.71,
+  "capacityLps": 86
  },
  "BUEIRO-0318": {
-  "elevationM": 765.1,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4889,
-  "runoffCoefficient": 0.63,
-  "capacityLps": 94
+  "elevationM": 834.2,
+  "downstreamDrainId": "BUEIRO-4225",
+  "catchmentAreaM2": 3283,
+  "runoffCoefficient": 0.65,
+  "capacityLps": 42
  },
  "BUEIRO-0450": {
-  "elevationM": 764.1,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4656,
-  "runoffCoefficient": 0.68,
-  "capacityLps": 31
+  "elevationM": 835.89,
+  "downstreamDrainId": "BUEIRO-1771",
+  "catchmentAreaM2": 3573,
+  "runoffCoefficient": 0.88,
+  "capacityLps": 49
  },
  "BUEIRO-0771": {
-  "elevationM": 790.4,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1072,
-  "runoffCoefficient": 0.68,
-  "capacityLps": 90
- },
- "BUEIRO-0893": {
-  "elevationM": 789.7,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1514,
-  "runoffCoefficient": 0.93,
-  "capacityLps": 100
- },
- "BUEIRO-1044": {
-  "elevationM": 803.9,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1006,
-  "runoffCoefficient": 0.8,
-  "capacityLps": 70
- },
- "BUEIRO-1207": {
-  "elevationM": 763.5,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2311,
+  "elevationM": 775.26,
+  "downstreamDrainId": "BUEIRO-3757",
+  "catchmentAreaM2": 692,
   "runoffCoefficient": 0.62,
-  "capacityLps": 37
- },
- "BUEIRO-1366": {
-  "elevationM": 780.3,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1681,
-  "runoffCoefficient": 0.79,
-  "capacityLps": 93
- },
- "BUEIRO-1421": {
-  "elevationM": 781.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1980,
-  "runoffCoefficient": 0.64,
-  "capacityLps": 93
- },
- "BUEIRO-1437": {
-  "elevationM": 804.7,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3550,
-  "runoffCoefficient": 0.63,
-  "capacityLps": 111
- },
- "BUEIRO-1457": {
-  "elevationM": 764.4,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 988,
-  "runoffCoefficient": 0.82,
-  "capacityLps": 83
- },
- "BUEIRO-1582": {
-  "elevationM": 807.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4002,
-  "runoffCoefficient": 0.87,
-  "capacityLps": 79
- },
- "BUEIRO-1600": {
-  "elevationM": 801.0,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4212,
-  "runoffCoefficient": 0.73,
-  "capacityLps": 51
- },
- "BUEIRO-1745": {
-  "elevationM": 815.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2499,
-  "runoffCoefficient": 0.63,
-  "capacityLps": 58
- },
- "BUEIRO-1767": {
-  "elevationM": 796.8,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3313,
-  "runoffCoefficient": 0.86,
-  "capacityLps": 56
- },
- "BUEIRO-1771": {
-  "elevationM": 802.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1099,
-  "runoffCoefficient": 0.64,
-  "capacityLps": 73
- },
- "BUEIRO-1801": {
-  "elevationM": 771.5,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3302,
-  "runoffCoefficient": 0.65,
   "capacityLps": 82
  },
- "BUEIRO-1887": {
-  "elevationM": 789.5,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1135,
+ "BUEIRO-0893": {
+  "elevationM": 815.56,
+  "downstreamDrainId": "BUEIRO-4687",
+  "catchmentAreaM2": 2250,
+  "runoffCoefficient": 0.64,
+  "capacityLps": 38
+ },
+ "BUEIRO-1044": {
+  "elevationM": 825.33,
+  "downstreamDrainId": "BUEIRO-4566",
+  "catchmentAreaM2": 1990,
+  "runoffCoefficient": 0.74,
+  "capacityLps": 112
+ },
+ "BUEIRO-1207": {
+  "elevationM": 800.19,
+  "downstreamDrainId": "BUEIRO-4687",
+  "catchmentAreaM2": 3043,
+  "runoffCoefficient": 0.6,
+  "capacityLps": 40
+ },
+ "BUEIRO-1366": {
+  "elevationM": 833.33,
+  "downstreamDrainId": "BUEIRO-1771",
+  "catchmentAreaM2": 1742,
   "runoffCoefficient": 0.87,
-  "capacityLps": 93
+  "capacityLps": 115
+ },
+ "BUEIRO-1421": {
+  "elevationM": 824.43,
+  "downstreamDrainId": "BUEIRO-1771",
+  "catchmentAreaM2": 4740,
+  "runoffCoefficient": 0.87,
+  "capacityLps": 48
+ },
+ "BUEIRO-1437": {
+  "elevationM": 802.63,
+  "downstreamDrainId": "BUEIRO-1457",
+  "catchmentAreaM2": 1733,
+  "runoffCoefficient": 0.74,
+  "capacityLps": 49
+ },
+ "BUEIRO-1457": {
+  "elevationM": 787.7,
+  "downstreamDrainId": "BUEIRO-3634",
+  "catchmentAreaM2": 3487,
+  "runoffCoefficient": 0.89,
+  "capacityLps": 50
+ },
+ "BUEIRO-1582": {
+  "elevationM": 778.77,
+  "downstreamDrainId": "BUEIRO-2860",
+  "catchmentAreaM2": 4634,
+  "runoffCoefficient": 0.63,
+  "capacityLps": 24
+ },
+ "BUEIRO-1600": {
+  "elevationM": 795.25,
+  "downstreamDrainId": "BUEIRO-2314",
+  "catchmentAreaM2": 2009,
+  "runoffCoefficient": 0.87,
+  "capacityLps": 94
+ },
+ "BUEIRO-1745": {
+  "elevationM": 785.97,
+  "downstreamDrainId": "BUEIRO-3405",
+  "catchmentAreaM2": 2277,
+  "runoffCoefficient": 0.94,
+  "capacityLps": 88
+ },
+ "BUEIRO-1767": {
+  "elevationM": 834.96,
+  "downstreamDrainId": "BUEIRO-4566",
+  "catchmentAreaM2": 3331,
+  "runoffCoefficient": 0.73,
+  "capacityLps": 23
+ },
+ "BUEIRO-1771": {
+  "elevationM": 822.36,
+  "downstreamDrainId": "BUEIRO-4237",
+  "catchmentAreaM2": 4968,
+  "runoffCoefficient": 0.66,
+  "capacityLps": 117
+ },
+ "BUEIRO-1801": {
+  "elevationM": 839.59,
+  "downstreamDrainId": "BUEIRO-3362",
+  "catchmentAreaM2": 4239,
+  "runoffCoefficient": 0.7,
+  "capacityLps": 69
+ },
+ "BUEIRO-1887": {
+  "elevationM": 842.61,
+  "downstreamDrainId": "BUEIRO-3510",
+  "catchmentAreaM2": 1298,
+  "runoffCoefficient": 0.94,
+  "capacityLps": 80
  },
  "BUEIRO-2313": {
-  "elevationM": 815.2,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3070,
-  "runoffCoefficient": 0.72,
-  "capacityLps": 64
+  "elevationM": 789.03,
+  "downstreamDrainId": "BUEIRO-1745",
+  "catchmentAreaM2": 4414,
+  "runoffCoefficient": 0.87,
+  "capacityLps": 80
  },
  "BUEIRO-2314": {
-  "elevationM": 801.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4237,
-  "runoffCoefficient": 0.62,
-  "capacityLps": 31
+  "elevationM": 781.72,
+  "downstreamDrainId": "BUEIRO-4687",
+  "catchmentAreaM2": 2578,
+  "runoffCoefficient": 0.78,
+  "capacityLps": 99
  },
  "BUEIRO-2660": {
-  "elevationM": 826.1,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4383,
-  "runoffCoefficient": 0.84,
-  "capacityLps": 28
+  "elevationM": 807.4,
+  "downstreamDrainId": "BUEIRO-3503",
+  "catchmentAreaM2": 3955,
+  "runoffCoefficient": 0.8,
+  "capacityLps": 87
  },
  "BUEIRO-2860": {
-  "elevationM": 764.2,
+  "elevationM": 762.71,
   "downstreamDrainId": null,
-  "catchmentAreaM2": 3036,
-  "runoffCoefficient": 0.83,
-  "capacityLps": 107
+  "catchmentAreaM2": 4857,
+  "runoffCoefficient": 0.73,
+  "capacityLps": 21
  },
  "BUEIRO-3027": {
-  "elevationM": 817.5,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2831,
-  "runoffCoefficient": 0.85,
-  "capacityLps": 105
+  "elevationM": 836.63,
+  "downstreamDrainId": "BUEIRO-3510",
+  "catchmentAreaM2": 1304,
+  "runoffCoefficient": 0.63,
+  "capacityLps": 115
  },
  "BUEIRO-3173": {
-  "elevationM": 784.3,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4282,
-  "runoffCoefficient": 0.72,
-  "capacityLps": 98
+  "elevationM": 855.74,
+  "downstreamDrainId": "BUEIRO-3325",
+  "catchmentAreaM2": 4671,
+  "runoffCoefficient": 0.66,
+  "capacityLps": 37
  },
  "BUEIRO-3195": {
-  "elevationM": 768.2,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 982,
-  "runoffCoefficient": 0.68,
-  "capacityLps": 56
+  "elevationM": 797.58,
+  "downstreamDrainId": "BUEIRO-3503",
+  "catchmentAreaM2": 2682,
+  "runoffCoefficient": 0.81,
+  "capacityLps": 49
  },
  "BUEIRO-3273": {
-  "elevationM": 769.1,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2528,
-  "runoffCoefficient": 0.74,
-  "capacityLps": 83
+  "elevationM": 824.69,
+  "downstreamDrainId": "BUEIRO-1437",
+  "catchmentAreaM2": 4766,
+  "runoffCoefficient": 0.91,
+  "capacityLps": 22
  },
  "BUEIRO-3325": {
-  "elevationM": 765.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4179,
-  "runoffCoefficient": 0.74,
-  "capacityLps": 55
+  "elevationM": 827.46,
+  "downstreamDrainId": "BUEIRO-3273",
+  "catchmentAreaM2": 4858,
+  "runoffCoefficient": 0.82,
+  "capacityLps": 108
  },
  "BUEIRO-3362": {
-  "elevationM": 821.8,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4026,
-  "runoffCoefficient": 0.9,
-  "capacityLps": 55
+  "elevationM": 825.63,
+  "downstreamDrainId": "BUEIRO-4260",
+  "catchmentAreaM2": 1553,
+  "runoffCoefficient": 0.81,
+  "capacityLps": 75
  },
  "BUEIRO-3405": {
-  "elevationM": 809.4,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3439,
-  "runoffCoefficient": 0.84,
-  "capacityLps": 68
+  "elevationM": 779.81,
+  "downstreamDrainId": "BUEIRO-0771",
+  "catchmentAreaM2": 588,
+  "runoffCoefficient": 0.92,
+  "capacityLps": 107
  },
  "BUEIRO-3441": {
-  "elevationM": 827.0,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1736,
-  "runoffCoefficient": 0.63,
-  "capacityLps": 39
+  "elevationM": 806.76,
+  "downstreamDrainId": "BUEIRO-3849",
+  "catchmentAreaM2": 4836,
+  "runoffCoefficient": 0.88,
+  "capacityLps": 23
  },
  "BUEIRO-3503": {
-  "elevationM": 776.2,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2411,
-  "runoffCoefficient": 0.6,
-  "capacityLps": 95
+  "elevationM": 775.21,
+  "downstreamDrainId": "BUEIRO-4687",
+  "catchmentAreaM2": 4790,
+  "runoffCoefficient": 0.93,
+  "capacityLps": 68
  },
  "BUEIRO-3510": {
-  "elevationM": 772.8,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2809,
+  "elevationM": 832.69,
+  "downstreamDrainId": "BUEIRO-3325",
+  "catchmentAreaM2": 2576,
   "runoffCoefficient": 0.6,
-  "capacityLps": 73
+  "capacityLps": 44
  },
  "BUEIRO-3634": {
-  "elevationM": 797.4,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3110,
-  "runoffCoefficient": 0.93,
-  "capacityLps": 108
+  "elevationM": 782.51,
+  "downstreamDrainId": "BUEIRO-0771",
+  "catchmentAreaM2": 4227,
+  "runoffCoefficient": 0.92,
+  "capacityLps": 76
  },
  "BUEIRO-3638": {
-  "elevationM": 820.1,
+  "elevationM": 810.1,
   "downstreamDrainId": null,
-  "catchmentAreaM2": 942,
-  "runoffCoefficient": 0.76,
-  "capacityLps": 119
- },
- "BUEIRO-3757": {
-  "elevationM": 826.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3714,
-  "runoffCoefficient": 0.74,
+  "catchmentAreaM2": 1367,
+  "runoffCoefficient": 0.63,
   "capacityLps": 70
  },
- "BUEIRO-3846": {
-  "elevationM": 767.2,
+ "BUEIRO-3757": {
+  "elevationM": 770.88,
   "downstreamDrainId": null,
-  "catchmentAreaM2": 3780,
-  "runoffCoefficient": 0.62,
-  "capacityLps": 28
+  "catchmentAreaM2": 4968,
+  "runoffCoefficient": 0.89,
+  "capacityLps": 42
+ },
+ "BUEIRO-3846": {
+  "elevationM": 769.22,
+  "downstreamDrainId": null,
+  "catchmentAreaM2": 1948,
+  "runoffCoefficient": 0.85,
+  "capacityLps": 106
  },
  "BUEIRO-3849": {
-  "elevationM": 828.9,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4109,
-  "runoffCoefficient": 0.66,
-  "capacityLps": 63
- },
- "BUEIRO-3915": {
-  "elevationM": 802.1,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1338,
-  "runoffCoefficient": 0.6,
-  "capacityLps": 39
- },
- "BUEIRO-4050": {
-  "elevationM": 797.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3478,
+  "elevationM": 804.12,
+  "downstreamDrainId": "BUEIRO-1600",
+  "catchmentAreaM2": 1374,
   "runoffCoefficient": 0.81,
-  "capacityLps": 29
- },
- "BUEIRO-4119": {
-  "elevationM": 821.2,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3582,
-  "runoffCoefficient": 0.65,
-  "capacityLps": 52
- },
- "BUEIRO-4138": {
-  "elevationM": 826.9,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 3483,
-  "runoffCoefficient": 0.77,
-  "capacityLps": 34
- },
- "BUEIRO-4225": {
-  "elevationM": 819.4,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4317,
-  "runoffCoefficient": 0.77,
-  "capacityLps": 59
- },
- "BUEIRO-4237": {
-  "elevationM": 766.0,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1337,
-  "runoffCoefficient": 0.86,
   "capacityLps": 114
  },
+ "BUEIRO-3915": {
+  "elevationM": 774.65,
+  "downstreamDrainId": "BUEIRO-3757",
+  "catchmentAreaM2": 720,
+  "runoffCoefficient": 0.79,
+  "capacityLps": 33
+ },
+ "BUEIRO-4050": {
+  "elevationM": 825.95,
+  "downstreamDrainId": "BUEIRO-3638",
+  "catchmentAreaM2": 3324,
+  "runoffCoefficient": 0.81,
+  "capacityLps": 40
+ },
+ "BUEIRO-4119": {
+  "elevationM": 774.45,
+  "downstreamDrainId": "BUEIRO-3846",
+  "catchmentAreaM2": 1526,
+  "runoffCoefficient": 0.71,
+  "capacityLps": 36
+ },
+ "BUEIRO-4138": {
+  "elevationM": 826.85,
+  "downstreamDrainId": "BUEIRO-3441",
+  "catchmentAreaM2": 4554,
+  "runoffCoefficient": 0.73,
+  "capacityLps": 26
+ },
+ "BUEIRO-4225": {
+  "elevationM": 829.47,
+  "downstreamDrainId": "BUEIRO-4050",
+  "catchmentAreaM2": 2296,
+  "runoffCoefficient": 0.73,
+  "capacityLps": 111
+ },
+ "BUEIRO-4237": {
+  "elevationM": 818.24,
+  "downstreamDrainId": "BUEIRO-4311",
+  "catchmentAreaM2": 4267,
+  "runoffCoefficient": 0.82,
+  "capacityLps": 95
+ },
  "BUEIRO-4260": {
-  "elevationM": 778.5,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1822,
-  "runoffCoefficient": 0.78,
-  "capacityLps": 46
+  "elevationM": 813.81,
+  "downstreamDrainId": "BUEIRO-3503",
+  "catchmentAreaM2": 2137,
+  "runoffCoefficient": 0.69,
+  "capacityLps": 68
  },
  "BUEIRO-4311": {
-  "elevationM": 826.6,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4827,
-  "runoffCoefficient": 0.73,
-  "capacityLps": 108
+  "elevationM": 813.1,
+  "downstreamDrainId": "BUEIRO-3634",
+  "catchmentAreaM2": 1528,
+  "runoffCoefficient": 0.62,
+  "capacityLps": 30
  },
  "BUEIRO-4334": {
-  "elevationM": 798.0,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 721,
-  "runoffCoefficient": 0.87,
-  "capacityLps": 58
+  "elevationM": 789.54,
+  "downstreamDrainId": "BUEIRO-2313",
+  "catchmentAreaM2": 4813,
+  "runoffCoefficient": 0.65,
+  "capacityLps": 102
  },
  "BUEIRO-4566": {
-  "elevationM": 828.5,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 1245,
-  "runoffCoefficient": 0.84,
-  "capacityLps": 53
+  "elevationM": 823.52,
+  "downstreamDrainId": "BUEIRO-2313",
+  "catchmentAreaM2": 4930,
+  "runoffCoefficient": 0.64,
+  "capacityLps": 37
  },
  "BUEIRO-4687": {
-  "elevationM": 796.3,
+  "elevationM": 768.3,
   "downstreamDrainId": null,
-  "catchmentAreaM2": 1868,
-  "runoffCoefficient": 0.72,
-  "capacityLps": 48
+  "catchmentAreaM2": 1318,
+  "runoffCoefficient": 0.71,
+  "capacityLps": 111
  },
  "BUEIRO-4784": {
-  "elevationM": 797.3,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 4618,
-  "runoffCoefficient": 0.72,
-  "capacityLps": 48
+  "elevationM": 841.37,
+  "downstreamDrainId": "BUEIRO-0102",
+  "catchmentAreaM2": 896,
+  "runoffCoefficient": 0.7,
+  "capacityLps": 24
  },
  "BUEIRO-4858": {
-  "elevationM": 802.9,
-  "downstreamDrainId": null,
-  "catchmentAreaM2": 2098,
-  "runoffCoefficient": 0.88,
-  "capacityLps": 71
+  "elevationM": 825.38,
+  "downstreamDrainId": "BUEIRO-4260",
+  "catchmentAreaM2": 3157,
+  "runoffCoefficient": 0.8,
+  "capacityLps": 119
  }
 }
