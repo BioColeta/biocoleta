@@ -44,6 +44,19 @@ test('the map shows markers that open the drain panel', async ({ page }) => {
   await expect(page.getByRole('link', { name: /Abrir alerta ALT-/ })).toBeVisible()
 })
 
+test('the collapsed menu keeps every item inside the sidebar', async ({ page }) => {
+  await signIn(page)
+  await page.getByRole('button', { name: 'Recolher menu' }).click()
+  const sidebar = page.getByRole('complementary')
+  const alerts = sidebar.getByRole('link', { name: /^Alertas, \d+ aguardando decisão$/ })
+  await expect(alerts).toBeVisible()
+  const edge = (await sidebar.boundingBox())!
+  for (const item of await sidebar.getByRole('navigation').locator('a, a span').all()) {
+    const box = await item.boundingBox()
+    if (box) expect(box.x + box.width).toBeLessThanOrEqual(edge.x + edge.width)
+  }
+})
+
 test('the command palette finds a drain with the keyboard', async ({ page }) => {
   await signIn(page)
   await page.keyboard.press('ControlOrMeta+k')

@@ -16,28 +16,42 @@ type NavProps = { newAlerts: number; collapsed?: boolean; onNavigate?: () => voi
 
 function Navigation({ newAlerts, collapsed, onNavigate }: NavProps) {
   return (
-    <nav aria-label="Principal" className="grid gap-1">
-      {navigation.map(({ to, label, icon: Icon }) => (
-        <Link
-          key={to}
-          to={to}
-          onClick={onNavigate}
-          title={collapsed ? label : undefined}
-          // The visible text names the link; an explicit label is only needed when it is hidden.
-          aria-label={collapsed ? label : undefined}
-          className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-3 rounded-lg px-3 py-2 text-sm"
-          activeProps={{ className: 'bg-muted !text-foreground font-medium' }}
-        >
-          <Icon className="size-4 shrink-0" aria-hidden />
-          {!collapsed && <span className="truncate">{label}</span>}
-          {to === '/app/alerts' && newAlerts > 0 && (
-            <span className="bg-danger text-background ml-auto rounded-full px-1.5 text-xs font-semibold tabular-nums">
-              {newAlerts}
-              <span className="sr-only"> aguardando decisão</span>
-            </span>
-          )}
-        </Link>
-      ))}
+    <nav aria-label="Principal" className="grid grid-cols-1 gap-1">
+      {navigation.map(({ to, label, icon: Icon }) => {
+        const pending = to === '/app/alerts' ? newAlerts : 0
+        const fullName = pending ? `${label}, ${pending} aguardando decisão` : label
+        return (
+          <Link
+            key={to}
+            to={to}
+            onClick={onNavigate}
+            title={collapsed ? fullName : undefined}
+            // The visible text names the link; an explicit label is only needed when it is hidden.
+            aria-label={collapsed ? fullName : undefined}
+            className={cn(
+              'text-muted-foreground hover:bg-muted hover:text-foreground relative flex h-9 items-center rounded-lg text-sm',
+              collapsed ? 'justify-center' : 'gap-3 px-3',
+            )}
+            activeProps={{ className: 'bg-muted !text-foreground font-medium' }}
+          >
+            <Icon className="size-4 shrink-0" aria-hidden />
+            {!collapsed && <span className="truncate">{label}</span>}
+            {pending > 0 && (
+              <span
+                className={cn(
+                  'bg-danger text-background rounded-full text-center font-semibold tabular-nums',
+                  collapsed
+                    ? 'absolute top-0 right-0 min-w-4 px-1 text-[10px] leading-4'
+                    : 'ml-auto px-1.5 text-xs',
+                )}
+              >
+                {pending}
+                {!collapsed && <span className="sr-only"> aguardando decisão</span>}
+              </span>
+            )}
+          </Link>
+        )
+      })}
     </nav>
   )
 }
@@ -63,7 +77,7 @@ export function AppLayout() {
         <Button
           variant="ghost"
           size="icon"
-          className="mt-auto"
+          className="mt-auto self-center"
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
         >
