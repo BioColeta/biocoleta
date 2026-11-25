@@ -73,6 +73,11 @@ export function workOrderView(db: Db, id: string): WorkOrderView {
 
 export const listWorkOrders = (db: Db) => db.workOrders.map((order) => workOrderView(db, order.id))
 
+function openAlertOf(db: Db, id: string | null) {
+  const alert = db.alerts.find((item) => item.id === id)
+  return alert ? { id: alert.id, status: alert.status } : null
+}
+
 export const listDemoDrains = (db: Db): DemoDrain[] =>
   listDrains(db).map((drain) => ({
     id: drain.id,
@@ -81,6 +86,7 @@ export const listDemoDrains = (db: Db): DemoDrain[] =>
     status: drain.status,
     scenario: db.simulation.scenarios[drain.id] ?? 'normal',
     lastReading: drain.lastReading,
+    openAlert: openAlertOf(db, drain.openAlertId),
   }))
 
 export const summary = (db: Db, district: string | undefined, now: Date) =>

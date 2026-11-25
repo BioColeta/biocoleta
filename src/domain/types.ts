@@ -191,5 +191,6 @@ export type DemoDrain = {
   status: DrainStatus
   scenario: Scenario
   lastReading: Reading | null
+  openAlert: { id: string; status: AlertStatus } | null
 }
 export type User = { username: string; name: string }
